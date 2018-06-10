@@ -8,18 +8,28 @@
           src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
           crossorigin="anonymous"></script>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB5j5LE-Xg_3P5fUJvP-fH53AFbBJ46Dg&callback=initMap" async defer></script>
+         
         <link href="main.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<main role = "main">
-	</main>
-
-
-	<div id="map"></div> 
-	<div id="js-event-list-container"></div>
-
-
-	<script src="index.js"></script>
+	<header roles="banner">
+		Find a Festival Anywhere!
+	</header>
+	<div id="search-box">
+		<form id="js-search-form">
+			<legend>Find your Festival!</legend>
+			<label for="search-box">
+				<span>Where are you?</span> 
+				<input type="text" name="search-box" id="search-box" placeholder="Enter Zipcode" required>
+			</label>
+			<button id="js-search-button" type="submit">Go!</button>
+		</form>
+</div> 
+<div id="js-search-results"></div> 
+<div id="map"></div>
+<!-- Replace the value of the key parameter with your own API key. -->
+<script src="index.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB5j5LE-Xg_3P5fUJvP-fH53AFbBJ46Dg&callback=initMap" async defer></script>
+	
 </body>
 </html>
