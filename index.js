@@ -15,11 +15,11 @@
 
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 
-function getDataFromEventbrite(zipcode){
+function getDataFromEventbrite(zipcode, radius){
 	const settings = {
   "async": true,
   "crossDomain": true,
-  "url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=30mi&expand=organizer,%20venue`,
+  "url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=${radius}&expand=organizer,%20venue`,
   "method": "GET",
   "headers": {
     "Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
@@ -57,7 +57,9 @@ function watchSubmit() {
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");
-		getDataFromEventbrite(query);
+		const queryRadius = $(event.currentTarget).find('#js-search-radius');
+		const miles = queryRadius.val();
+		getDataFromEventbrite(query, miles);
 
 	});
 	
