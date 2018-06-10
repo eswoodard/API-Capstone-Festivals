@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
 	<title>Find Festivals</title>
-	<script
+	<<script
           src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
           crossorigin="anonymous"></script>
@@ -20,14 +21,13 @@
 			<legend>Find your Festival!</legend>
 			<label for="search-box">
 				<span>Where are you?</span> 
-				<input type="text" name="search-box" id="search-box" placeholder="Enter Zipcode" required>
+				<input type="text" name="search-box" id="js-query" placeholder="Enter Zipcode" required>
 			</label>
 			<button id="js-search-button" type="submit">Go!</button>
 		</form>
 </div> 
-<div id="js-search-results"></div> 
+<div id="js-event-list-container"></div> 
 <div id="map"></div>
-<!-- Replace the value of the key parameter with your own API key. -->
 <script src="index.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB5j5LE-Xg_3P5fUJvP-fH53AFbBJ46Dg&callback=initMap" async defer></script>
 	

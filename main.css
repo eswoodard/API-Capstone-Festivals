@@ -1,3 +1,4 @@
+
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 
@@ -5,7 +6,7 @@
 	box-sizing: border-box;
 }
 
-#js-search-results {
+#js-event-list-container {
 	float: left;
 	height: 100%;
 	width: 50%;
