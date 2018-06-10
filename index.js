@@ -39,6 +39,16 @@ function getDataFromEventbrite(zipcode, radius){
 
 }
 
+function renderEventListHTML(result) {
+	return `
+		<div class = "items">
+			<ul>
+				<li class="title">${result.name.text}</li>
+			</ul>
+		</div>
+	`;
+}
+
 
       
 function initMap(query) {
@@ -65,6 +75,7 @@ function geocodeAddress(geocoder, resultsMap, zipcode) {
 			resultsMap.setCenter(results[0].geometry.location);}
 		else {
 			alert('Geocode was not successful for the following reason: ' + status);
+			
 		}
 		
 	});
@@ -72,15 +83,6 @@ function geocodeAddress(geocoder, resultsMap, zipcode) {
 
 
 
-function renderEventListHTML(result) {
-	return `
-		<div class = "items">
-			<ul>
-				<li class="title">${result.name.text}</li>
-			</ul>
-		</div>
-	`;
-}
 
 
 function watchSubmit() {
