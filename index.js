@@ -16,7 +16,7 @@
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 
 function getDataFromEventbrite(zipcode){
-	var settings = {
+	const settings = {
   "async": true,
   "crossDomain": true,
   "url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=30mi&expand=organizer,%20venue`,
@@ -24,39 +24,30 @@ function getDataFromEventbrite(zipcode){
   "headers": {
     "Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
   }
+
+
 }
+console.log("getDataFromEventbrite ran");
 
 function handleResponse(response){
-	console.log(response);
-	const eventListHTML = renderEventListHTML(response);
-	renderEventList(eventListHTML);
+	console.log('handleResponse ran');
+	const eventListHTML = response.events.map((item, index) => renderEventListHTML(item));
+	$('#js-event-list-container').html(eventListHTML);
 }
-
 
 $.ajax(settings).done(handleResponse);
 
+}
 
-function renderEventListHTML() {
+
+function renderEventListHTML(result) {
 	return `
 		<div class = "items">
 			<ul>
-				<li class="title">${response.name.text}</li>
+				<li class="title">${result.name.text}</li>
 			</ul>
 		</div>
 	`;
-}
-
-function renderEventList(html) {
-	$('#js-event-list-container').html(html);
-
-}
-  
-
-
-// $.ajax(settings).done(response => {
-//   console.log(response);
-// });
-
 }
 
 
@@ -65,7 +56,6 @@ function watchSubmit() {
 		event.preventDefault();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
-		console.log(query);
 		queryTarget.val("");
 		getDataFromEventbrite(query);
 
