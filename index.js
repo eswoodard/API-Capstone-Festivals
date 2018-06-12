@@ -31,15 +31,51 @@ function getDataFromEventbrite(zipcode, radius){
 
 	function handleResponse(response){
 		console.log('handleResponse ran');
+		console.log(response);
 		const eventListHTML = response.events.map((item, index) => renderEventListHTML(item));
 		$('#js-event-list-container').html(eventListHTML);
+		
+
+		
+
 	}
 
 	$.ajax(settings).done(handleResponse);
 
 }
+//need to pass venue-id as arugment to get API to return venue object.  Can get address from venue object
+function getVenueAddress(venue) {
+	console.log("getVenueAddress ran");
+	const settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": ` https://www.eventbriteapi.com/v3/venues/${venue}/?token=2543EBUADTSZK2TAFZS3`,
+  "method": "GET",		
+	}
+
+	function handleAddress(response){
+		console.log("handleAddress ran");
+		console.log(response);
+		//does this need to be lat,lng?
+		//const eventAddress = response.address.map((item, index) => createMarker(item));
+		
+		
+	}
+
+	$.ajax(settings).done(handleAddress);
+	
+}
+
+
+
 
 function renderEventListHTML(result) {
+	console.log("renderEventListHTML ran");
+	const venueID = result.venue_id;
+
+	console.log(venueID);
+	getVenueAddress(venueID);
+
 	return `
 		<div class = "items">
 			<ul>
@@ -48,7 +84,6 @@ function renderEventListHTML(result) {
 		</div>
 	`;
 }
-
 
       
 function initMap(query) {
@@ -82,6 +117,18 @@ function geocodeAddress(geocoder, resultsMap, zipcode) {
 }
 
 
+
+// function createMarker(event) {
+// 	const {venue, url, name} = event;
+// 	const {latitude, longitude} = venue;
+// 	const position = {lat: +latitude, lng: +longitude}
+// 	const template = createEventTemplate(event);
+// 	let marker = new google.maps.Marker({
+// 		position,
+// 		url,
+// 		map,
+// 	});
+// }
 
 
 
