@@ -14,6 +14,7 @@
 
 
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
+let map;
 
 function getDataFromEventbrite(zipcode, radius){
 	const settings = {
@@ -25,25 +26,25 @@ function getDataFromEventbrite(zipcode, radius){
     "Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
   		}
 
-
 	}
 	console.log("getDataFromEventbrite ran");
 
-	function handleResponse(response){
-		console.log('handleResponse ran');
-		console.log(response);
-		const eventListHTML = response.events.map((item, index) => renderEventListHTML(item));
-		$('#js-event-list-container').html(eventListHTML);
-		
-
-		
-
-	}
-
-	$.ajax(settings).done(handleResponse);
+	$.ajax(settings).done(handleEventbriteResponse);
 
 }
-//need to pass venue-id as arugment to get API to return venue object.  Can get address from venue object
+
+function handleEventbriteResponse(response){
+		console.log('handleEventbriteResponse ran');
+		console.log(response);
+		const eventListHTML = response.events.map((item, index) => {
+			if (index < 25) {
+				return generateEventListHTML(item);
+			}
+			
+		});
+		$('#js-event-list-container').html(eventListHTML);		
+	}
+
 function getVenueAddress(venue) {
 	console.log("getVenueAddress ran");
 	const settings = {
@@ -53,23 +54,25 @@ function getVenueAddress(venue) {
   "method": "GET",		
 	}
 
-	function handleAddress(response){
-		console.log("handleAddress ran");
-		console.log(response);
-		//does this need to be lat,lng?
-		//const eventAddress = response.address.map((item, index) => createMarker(item));
-		
-		
-	}
+ 
 
-	$.ajax(settings).done(handleAddress);
+	$.ajax(settings).done(handleVenueAddress);
 	
 }
 
+function handleVenueAddress(data){
+	console.log("handleVenueAddress ran");
+	console.log(data);
+		//need to figure out how to pass venueLatLng to initMap
+	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
 
+	console.log(venueLatLng);	
 
+	createMarker(venueLatLng);
+		
+	}
 
-function renderEventListHTML(result) {
+function generateEventListHTML(result) {
 	console.log("renderEventListHTML ran");
 	const venueID = result.venue_id;
 
@@ -87,12 +90,12 @@ function renderEventListHTML(result) {
 
       
 function initMap(query) {
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
           zoom: 10,
         });
-    var geocoder = new google.maps.Geocoder();
-    geocodeAddress(geocoder, map, query);
+    let geocoder = new google.maps.Geocoder();
+    centerMapOnZipcode(geocoder, map, query);
       
 
   console.log("initMap ran");
@@ -100,10 +103,19 @@ function initMap(query) {
 }
 
 
+function createMarker(latLng){
+	let marker = new google.maps.Marker({
+    	position: latLng,
+    });
 
-function geocodeAddress(geocoder, resultsMap, zipcode) {
-	console.log('geocodeAddress ran')
-	var address = zipcode;
+    marker.setMap(map);
+
+}
+
+
+function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
+	console.log('centerMapOnZipcode ran')
+	let address = zipcode;
 	console.log(address);
 	geocoder.geocode({'address':address}, function(results, status) {
 		if (status === 'OK') {
