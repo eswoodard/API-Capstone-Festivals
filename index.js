@@ -74,14 +74,15 @@ function handleVenueAddress(data){
 	}
 
 function generateEventListHTML(result) {
-	console.log("renderEventListHTML ran");
+	console.log("generateEventListHTML ran");
 	const venueID = result.venue_id;
 
 	console.log(venueID);
 	getVenueAddress(venueID);
+	
 
 	return `
-		<div class = "items">
+		<div class = "items" onclick ="activateModalBox()">
 			<ul>
 				<li class="title">${result.name.text}</li>
 			</ul>
@@ -130,19 +131,20 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 	});
 }
 
+function activateModalBox(){
+	console.log("activateModalBox ran");
+	
+	$(".modal, .modal-content").addClass("active");
+	$(".close, .modal").on("click", function(){
+		$(".modal, .modal-content").removeClass("active");
+	});
+	window.onclick = function(event){
+		if (event.target == $(".modal")){
+			$(".modal, .modal-content").removeClass("active");
+		}
+	}
+}
 
-
-// function createMarker(event) {
-// 	const {venue, url, name} = event;
-// 	const {latitude, longitude} = venue;
-// 	const position = {lat: +latitude, lng: +longitude}
-// 	const template = createEventTemplate(event);
-// 	let marker = new google.maps.Marker({
-// 		position,
-// 		url,
-// 		map,
-// 	});
-// }
 
 
 
@@ -156,6 +158,8 @@ function watchSubmit() {
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
 		initMap(query, miles);
+		
+
 		 
 	});
 	
