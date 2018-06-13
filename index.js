@@ -25,12 +25,10 @@ function getDataFromEventbrite(zipcode, radius){
 		"headers": {
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
 		}
-
 	}
+
 	console.log("getDataFromEventbrite ran");
-
 	$.ajax(settings).done(handleEventbriteResponse);
-
 }
 
 function handleEventbriteResponse(response){
@@ -40,10 +38,20 @@ function handleEventbriteResponse(response){
 		if (index < 10) {
 			return generateEventListHTML(item);
 		}
-		
 	});
+	// const eventInfoHTML = response.events.map((item, index) => {
+	// 		return generateModalBoxContent(item);
 
-	$('#js-event-list-container').html(eventListHTML);		
+	// });
+		
+	// generateModalBoxContent(response);
+
+	$('#js-event-list-container').html(eventListHTML);
+	//$('.modal-content').append(eventInfoHTML);
+	//console.log(eventListHTML);
+	//console.log(eventInfoHTML);
+
+		
 }
 
 function getVenueAddress(venue) {
@@ -55,31 +63,26 @@ function getVenueAddress(venue) {
 		"method": "GET",		
 	}
 
- 
-
 	$.ajax(settings).done(handleVenueAddress);
-	
 }
 
 function handleVenueAddress(data){
 	console.log("handleVenueAddress ran");
-	console.log(data);
-		//need to figure out how to pass venueLatLng to initMap
+	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
 
 	console.log(venueLatLng);	
-
-	createMarker(venueLatLng);
-		
-	}
+	createMarker(venueLatLng);	
+}
 
 function generateEventListHTML(result) {
 	console.log("generateEventListHTML ran");
 	const venueID = result.venue_id;
 
-	console.log(venueID);
+	//console.log(venueID);
 	getVenueAddress(venueID);
 	
+
 
 	return `
 		<div class = "items" onclick ="activateModalBox()">
@@ -90,51 +93,11 @@ function generateEventListHTML(result) {
 	`;
 }
 
-      
-function initMap(query, miles) {
-    map = new google.maps.Map(document.getElementById('map'), {
-    	center: {lat: -34.397, lng: 150.644},
-         zoom: 11,
-    });
-
-    let geocoder = new google.maps.Geocoder();
-    centerMapOnZipcode(geocoder, map, query);
-      
-
-	console.log("initMap ran");
-
-}
-
-
-function createMarker(latLng){
-	let marker = new google.maps.Marker({
-    	position: latLng,
-    });
-
-    marker.setMap(map);
-
-}
-
-
-function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
-	console.log('centerMapOnZipcode ran')
-	let address = zipcode;
-	console.log(address);
-	geocoder.geocode({'address':address}, function(results, status) {
-		if (status === 'OK') {
-			resultsMap.setCenter(results[0].geometry.location);}
-		else {
-			alert('Geocode was not successful for the following reason: ' + status);
-			
-		}
-		
-	});
-}
-
 function activateModalBox(){
 	console.log("activateModalBox ran");
 	
 	$(".modal, .modal-content").addClass("active");
+	
 	$(".close, .modal").on("click", function(){
 		$(".modal, .modal-content").removeClass("active");
 	});
@@ -145,6 +108,63 @@ function activateModalBox(){
 	}
 }
 
+// function generateModalBoxContent(result){
+// 	console.log("generateModalBoxContent ran");
+// 	let eventName = result.name.text;
+// 	console.log(eventName);
+// 		return `
+// 		<div class = "eventName">
+// 			<h2 class = "event-title"><a href = "${result.url}" target = "_blank">${result.name.text}</a>
+// 			</h2>
+// 		</div>`
+
+		
+// }
+      
+function initMap(query, miles) {
+    map = new google.maps.Map(document.getElementById('map'), {
+    	center: {lat: -34.397, lng: 150.644},
+         zoom: 11,
+    });
+
+    let geocoder = new google.maps.Geocoder();
+    centerMapOnZipcode(geocoder, map, query); 
+
+	console.log("initMap ran");
+}
+
+function createMarker(latLng){
+	let marker = new google.maps.Marker({
+    	position: latLng,
+    });
+
+    marker.setMap(map);
+
+    marker.addListener('click', function(){
+    	$(".modal, .modal-content").addClass("active");
+		$(".close, .modal").on("click", function(){
+			$(".modal, .modal-content").removeClass("active");
+		});
+	window.onclick = function(event){
+		if (event.target == $(".modal")){
+			$(".modal, .modal-content").removeClass("active");
+		}
+	}
+	});
+}
+
+function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
+	console.log('centerMapOnZipcode ran')
+	let address = zipcode;
+	//console.log(address);
+	geocoder.geocode({'address':address}, function(results, status) {
+		if (status === 'OK') {
+			resultsMap.setCenter(results[0].geometry.location);}
+		else {
+			alert('Geocode was not successful for the following reason: ' + status);	
+		}
+	});
+}
 
 
 
@@ -157,10 +177,7 @@ function watchSubmit() {
 		const queryRadius = $(event.currentTarget).find('#js-search-radius');
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
-		initMap(query, miles);
-		
-
-		 
+		initMap(query, miles); 
 	});
 	
 	console.log('watchSubmit ran');
