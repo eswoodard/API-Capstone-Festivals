@@ -18,13 +18,13 @@ let map;
 
 function getDataFromEventbrite(zipcode, radius){
 	const settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=${radius}&expand=organizer,%20venue`,
-  "method": "GET",
-  "headers": {
-    "Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
-  		}
+		"async": true,
+		"crossDomain": true,
+		"url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=${radius}&expand=organizer,%20venue`,
+		"method": "GET",
+		"headers": {
+			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
+		}
 
 	}
 	console.log("getDataFromEventbrite ran");
@@ -34,24 +34,25 @@ function getDataFromEventbrite(zipcode, radius){
 }
 
 function handleEventbriteResponse(response){
-		console.log('handleEventbriteResponse ran');
-		console.log(response);
-		const eventListHTML = response.events.map((item, index) => {
-			if (index < 25) {
-				return generateEventListHTML(item);
-			}
-			
-		});
-		$('#js-event-list-container').html(eventListHTML);		
-	}
+	console.log('handleEventbriteResponse ran');
+	console.log(response);
+	const eventListHTML = response.events.map((item, index) => {
+		if (index < 10) {
+			return generateEventListHTML(item);
+		}
+		
+	});
+
+	$('#js-event-list-container').html(eventListHTML);		
+}
 
 function getVenueAddress(venue) {
 	console.log("getVenueAddress ran");
 	const settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": ` https://www.eventbriteapi.com/v3/venues/${venue}/?token=2543EBUADTSZK2TAFZS3`,
-  "method": "GET",		
+		"async": true,
+		"crossDomain": true,
+		"url": ` https://www.eventbriteapi.com/v3/venues/${venue}/?token=2543EBUADTSZK2TAFZS3`,
+		"method": "GET",		
 	}
 
  
@@ -89,16 +90,17 @@ function generateEventListHTML(result) {
 }
 
       
-function initMap(query) {
+function initMap(query, miles) {
     map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 10,
-        });
+    	center: {lat: -34.397, lng: 150.644},
+         zoom: 11,
+    });
+
     let geocoder = new google.maps.Geocoder();
     centerMapOnZipcode(geocoder, map, query);
       
 
-  console.log("initMap ran");
+	console.log("initMap ran");
 
 }
 
@@ -153,7 +155,7 @@ function watchSubmit() {
 		const queryRadius = $(event.currentTarget).find('#js-search-radius');
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
-		initMap(query);
+		initMap(query, miles);
 		 
 	});
 	
