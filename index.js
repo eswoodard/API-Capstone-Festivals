@@ -44,13 +44,14 @@ function handleEventbriteResponse(response){
 
 	// });
 		
-	// generateModalBoxContent(response);
+	
 
 	$('#js-event-list-container').html(eventListHTML);
-	//$('.modal-content').append(eventInfoHTML);
+	// $('.modal-content').append(eventInfoHTML);
 	//console.log(eventListHTML);
 	//console.log(eventInfoHTML);
-
+	
+	
 		
 }
 
@@ -78,19 +79,26 @@ function handleVenueAddress(data){
 function generateEventListHTML(result) {
 	console.log("generateEventListHTML ran");
 	const venueID = result.venue_id;
+	const eventName = result.name.text;
+	const eventURL = result.url;
+	console.log(eventName);
+	console.log(eventURL);
 
 	//console.log(venueID);
 	getVenueAddress(venueID);
+	generateModalBoxContent(eventName, eventURL);
 	
 
 
 	return `
 		<div class = "items" onclick ="activateModalBox()">
 			<ul>
-				<li class="title">${result.name.text}</li>
+				<li class="title">${eventName}</li>
 			</ul>
 		</div>
 	`;
+
+	
 }
 
 function activateModalBox(){
@@ -108,18 +116,18 @@ function activateModalBox(){
 	}
 }
 
-// function generateModalBoxContent(result){
-// 	console.log("generateModalBoxContent ran");
-// 	let eventName = result.name.text;
-// 	console.log(eventName);
-// 		return `
-// 		<div class = "eventName">
-// 			<h2 class = "event-title"><a href = "${result.url}" target = "_blank">${result.name.text}</a>
-// 			</h2>
-// 		</div>`
+function generateModalBoxContent(name, url){
+	console.log("generateModalBoxContent ran");
+	
+		$('.modal-content').append(`
+		<div class = "eventName">
+			<h2 class = "event-title"><a href = "${url}" target = "_blank">${name}</a>
+			</h2>
+		</div>`);
+
 
 		
-// }
+}
       
 function initMap(query, miles) {
     map = new google.maps.Map(document.getElementById('map'), {
