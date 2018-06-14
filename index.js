@@ -179,6 +179,7 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 function watchSubmit() {
 	$('#js-search-form').submit(event => {
 		event.preventDefault();
+		$('#search-box').remove();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");

@@ -29,14 +29,14 @@ h1 {
 	float: left;
 	height: 100%;
 	width: 50%;
-	border: black solid 1px;
+	/*border: black solid 1px;*/
 }
 
 #map {
   height: 80%;
   width: 50%;
   float: right;
-  border: black solid 1px;
+  /*border: black solid 1px;*/
 }
 
 /* Optional: Makes the sample page fill the window. */
