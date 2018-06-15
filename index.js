@@ -16,6 +16,7 @@
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 let map;
 
+
 function getDataFromEventbrite(zipcode, radius){
 	const settings = {
 		"async": true,
@@ -26,37 +27,25 @@ function getDataFromEventbrite(zipcode, radius){
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
 		}
 	}
-
-	console.log("getDataFromEventbrite ran");
+	//console.log("getDataFromEventbrite ran");
 	$.ajax(settings).done(handleEventbriteResponse);
 }
 
 function handleEventbriteResponse(response){
-	console.log('handleEventbriteResponse ran');
-	console.log(response);
+	//console.log('handleEventbriteResponse ran');
+	STORE.events = response.events;
 	const eventListHTML = response.events.map((item, index) => {
+
 		if (index < 10) {
-			return generateEventListHTML(item);
+			return generateEventListHTML(item);	
 		}
-	});
-	// const eventInfoHTML = response.events.map((item, index) => {
-	// 		return generateModalBoxContent(item);
-
-	// });
-		
+	});																																							
 	
-
-	$('#js-event-list-container').html(eventListHTML);
-	// $('.modal-content').append(eventInfoHTML);
-	//console.log(eventListHTML);
-	//console.log(eventInfoHTML);
-	
-	
-		
+	$('#js-event-list-container').html(eventListHTML);		
 }
 
 function getVenueAddress(venue) {
-	console.log("getVenueAddress ran");
+	//console.log("getVenueAddress ran");
 	const settings = {
 		"async": true,
 		"crossDomain": true,
@@ -68,65 +57,113 @@ function getVenueAddress(venue) {
 }
 
 function handleVenueAddress(data){
-	console.log("handleVenueAddress ran");
-	//console.log(data);
+	//console.log("handleVenueAddress ran");
+	//.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
-
-	console.log(venueLatLng);	
+	//console.log(venueLatLng);	
 	createMarker(venueLatLng);	
 }
 
-function generateEventListHTML(result) {
-	console.log("generateEventListHTML ran");
-	const venueID = result.venue_id;
-	const eventName = result.name.text;
-	const eventURL = result.url;
-	console.log(eventName);
-	console.log(eventURL);
+const STORE = {
+	events: [],
 
-	//console.log(venueID);
-	getVenueAddress(venueID);
-	generateModalBoxContent(eventName, eventURL);
-	
-
-
-	return `
-		<div class = "items" onclick ="activateModalBox()">
-			<ul>
-				<li class="title">${eventName}</li>
-			</ul>
-		</div>
-	`;
-
-	
 }
 
-function activateModalBox(){
-	console.log("activateModalBox ran");
-	
-	$(".modal, .modal-content").addClass("active");
-	
-	$(".close, .modal").on("click", function(){
-		$(".modal, .modal-content").removeClass("active");
-	});
-	window.onclick = function(event){
-		if (event.target == $(".modal")){
-			$(".modal, .modal-content").removeClass("active");
+function getEventById(eventId){
+	for(let i = 0; i < STORE.events.length; i++){
+		if(eventId === STORE.events[i].id){
+			return STORE.events[i];
 		}
 	}
 }
 
-function generateModalBoxContent(name, url){
-	console.log("generateModalBoxContent ran");
+// function getEventbyVenueId(eventVenueId){
+// 	for(let i = 0; i < STORE.events.length; i++){
+// 		if(eventVenueId === STORE.events[i].venue_id){
+// 			return STORE.events[i];
+// 		}
+// 	}
+// }
+
+
+function generateEventListHTML(result) {
 	
-		$('.modal-content').append(`
+	//console.log("generateEventListHTML ran");
+	//console.log(result);
+	const venueID = result.venue_id;
+	//console.log(venueID);
+	eventName = result.name.text;
+	getVenueAddress(venueID);
+	
+	return `
+		<div id = "items" onclick = "activateModalBox('${result.id}')">
+			<ul class = "title-info">
+				<li class="title">${result.name.text}</li>
+			</ul>
+		</div>
+	`;
+}
+
+function generateModalBoxContent(result){
+	console.log("generateModalBoxContent ran");
+
+	const eventName = result.name.text;
+	const eventURL = result.url;
+	const eventLogo = result.logo.url;
+	const eventDescription = result.description.text;
+	const eventDateAndTime = result.start.local;
+	const eventDayMonth = eventDateAndTime.slice(5,10);
+	const eventYear = eventDateAndTime.slice(0,4);
+	const eventDate = eventDayMonth + '-' + eventYear;
+	const eventTime = eventDateAndTime.slice(11, 16)
+
+	
+		$('.event-information').html(`
 		<div class = "eventName">
-			<h2 class = "event-title"><a href = "${url}" target = "_blank">${name}</a>
+			<h2 class = "event-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
 			</h2>
-		</div>`);
+		</div>
+		<div class = "event-logo"><img src = "${eventLogo}" alt = "logo"></div>
+		<div class = "event-date-time">
+			<ul>
+				<li class = "date">Date: ${eventDate}</li>
+				<li class = "time">Time: ${eventTime}</li>
+			</ul>
+		</div>
+		<div class = "event-description"><p> <span class = "description-text">${eventDescription}</span><a href = "${eventURL}" target = "_blank">...more</a></p></div>
+		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for more information and ticket sales</a></div>
+		`);	
 
+		limitDescriptionText(eventDescription);	
+}
 
-		
+function limitDescriptionText(text){
+	$('.description-text').text(function(index,currentText){
+		return currentText.substr(0,550);
+	});
+}
+
+function activateModalBox(eventId){
+	console.log("activateModalBox ran");
+	const event = getEventById(eventId);
+	console.log(event);
+	generateModalBoxContent(event);
+	$(".modal, .modal-content").addClass("active");
+
+}
+
+function bindEventListeners(){
+	$(".close").on("click", function(){
+		console.log("modal close");
+		$(".modal, .modal-content").removeClass("active");
+	});
+	window.onclick = function(event){
+		if (event.target == $(".content-container")){
+			$(".modal, .modal-content").removeClass("active");
+		}
+
+	}
+	watchSubmit();		
 }
       
 function initMap(query, miles) {
@@ -141,7 +178,7 @@ function initMap(query, miles) {
 	console.log("initMap ran");
 }
 
-function createMarker(latLng){
+function createMarker(latLng, eventId){
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
@@ -149,20 +186,14 @@ function createMarker(latLng){
     marker.setMap(map);
 
     marker.addListener('click', function(){
-    	$(".modal, .modal-content").addClass("active");
-		$(".close, .modal").on("click", function(){
-			$(".modal, .modal-content").removeClass("active");
-		});
-	window.onclick = function(event){
-		if (event.target == $(".modal")){
-			$(".modal, .modal-content").removeClass("active");
-		}
-	}
+    	// $(".modal, .modal-content").addClass("active");
+    	activateModalBox(eventId);
+		
 	});
 }
 
 function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
-	console.log('centerMapOnZipcode ran')
+	//console.log('centerMapOnZipcode ran')
 	let address = zipcode;
 	//console.log(address);
 	geocoder.geocode({'address':address}, function(results, status) {
@@ -179,7 +210,6 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 function watchSubmit() {
 	$('#js-search-form').submit(event => {
 		event.preventDefault();
-		$('#search-box').remove();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");
@@ -189,8 +219,8 @@ function watchSubmit() {
 		initMap(query, miles); 
 	});
 	
-	console.log('watchSubmit ran');
+	//console.log('watchSubmit ran');
 }
 
-$(watchSubmit);
+$(bindEventListeners);
       

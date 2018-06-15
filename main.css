@@ -46,7 +46,7 @@ html, body {
   padding: 0;
 }
 
-ul {
+.title-info {
 	list-style: none;
 	border: black solid 1px;
 	border-radius: 5px;
