@@ -58,10 +58,12 @@ function getVenueAddress(venue) {
 
 function handleVenueAddress(data){
 	//console.log("handleVenueAddress ran");
-	//.log(data);
+	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
+	let eventVenueId = data.id;
+	//console.log(eventVenueId);
 	//console.log(venueLatLng);	
-	createMarker(venueLatLng);	
+	createMarker(venueLatLng, eventVenueId);	
 }
 
 const STORE = {
@@ -77,13 +79,13 @@ function getEventById(eventId){
 	}
 }
 
-// function getEventbyVenueId(eventVenueId){
-// 	for(let i = 0; i < STORE.events.length; i++){
-// 		if(eventVenueId === STORE.events[i].venue_id){
-// 			return STORE.events[i];
-// 		}
-// 	}
-// }
+function getEventbyVenueId(eventVenueId){
+	for(let i = 0; i < STORE.events.length; i++){
+		if(eventVenueId === STORE.events[i].venue_id){
+			return STORE.events[i];
+		}
+	}
+}
 
 
 function generateEventListHTML(result) {
@@ -92,11 +94,11 @@ function generateEventListHTML(result) {
 	//console.log(result);
 	const venueID = result.venue_id;
 	//console.log(venueID);
-	eventName = result.name.text;
+	const eventName = result.name.text;
 	getVenueAddress(venueID);
 	
 	return `
-		<div id = "items" onclick = "activateModalBox('${result.id}')">
+		<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
 			<ul class = "title-info">
 				<li class="title">${result.name.text}</li>
 			</ul>
@@ -105,7 +107,8 @@ function generateEventListHTML(result) {
 }
 
 function generateModalBoxContent(result){
-	console.log("generateModalBoxContent ran");
+	//console.log("generateModalBoxContent ran");
+	//console.log(result);
 
 	const eventName = result.name.text;
 	const eventURL = result.url;
@@ -131,7 +134,7 @@ function generateModalBoxContent(result){
 			</ul>
 		</div>
 		<div class = "event-description"><p> <span class = "description-text">${eventDescription}</span><a href = "${eventURL}" target = "_blank">...more</a></p></div>
-		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for more information and ticket sales</a></div>
+		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for additional event information and ticketing</a></div>
 		`);	
 
 		limitDescriptionText(eventDescription);	
@@ -143,18 +146,21 @@ function limitDescriptionText(text){
 	});
 }
 
-function activateModalBox(eventId){
-	console.log("activateModalBox ran");
+function activateModalBox(eventId, eventVenueId){
+	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
+	
 	console.log(event);
-	generateModalBoxContent(event);
+	
+	
+	generateModalBoxContent(eventVenueId);
 	$(".modal, .modal-content").addClass("active");
 
 }
 
 function bindEventListeners(){
 	$(".close").on("click", function(){
-		console.log("modal close");
+		//console.log("modal close");
 		$(".modal, .modal-content").removeClass("active");
 	});
 	window.onclick = function(event){
@@ -175,19 +181,23 @@ function initMap(query, miles) {
     let geocoder = new google.maps.Geocoder();
     centerMapOnZipcode(geocoder, map, query); 
 
-	console.log("initMap ran");
+	//console.log("initMap ran");
 }
 
-function createMarker(latLng, eventId){
+function createMarker(latLng, eventVenueId){
+	console.log("createMarker ran");
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
 
     marker.setMap(map);
-
+    
+   const eventVenue = getEventbyVenueId(eventVenueId)
+   console.log(eventVenue);
     marker.addListener('click', function(){
+    	
     	// $(".modal, .modal-content").addClass("active");
-    	activateModalBox(eventId);
+    	activateModalBox(eventVenue);
 		
 	});
 }
