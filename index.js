@@ -95,13 +95,25 @@ function generateEventListHTML(result) {
 	const venueID = result.venue_id;
 	//console.log(venueID);
 	const eventName = result.name.text;
+	const eventLogo = result.logo.url;
+	const eventDateAndTime = result.start.local;
+	const eventMonth = eventDateAndTime.slice(5,8);
+	//console.log(eventMonth);
+	const eventDay = eventDateAndTime.slice(8,10);
+	//console.log(eventDay);
 	getVenueAddress(venueID);
 	
 	return `
 		<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
-			<ul class = "title-info">
-				<li class="title">${result.name.text}</li>
-			</ul>
+			<div class = "title-info">
+				<p class="title">${result.name.text}</p>
+				<img class = "list-logo" src = "${eventLogo}" alt = "logo">
+				<ul class = "month-day">
+					<li class = "month">${eventMonth}</li>
+					<li class = "day">${eventDay}</li>
+				</ul>
+			</div>
+			
 		</div>
 	`;
 }
@@ -119,6 +131,8 @@ function generateModalBoxContent(result){
 	const eventYear = eventDateAndTime.slice(0,4);
 	const eventDate = eventDayMonth + '-' + eventYear;
 	const eventTime = eventDateAndTime.slice(11, 16)
+	
+
 
 	
 		$('.event-information').html(`
@@ -150,10 +164,10 @@ function activateModalBox(eventId, eventVenueId){
 	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
 	
-	console.log(event);
+	//console.log(event);
 	
 	
-	generateModalBoxContent(eventVenueId);
+	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
 
 }
@@ -185,7 +199,7 @@ function initMap(query, miles) {
 }
 
 function createMarker(latLng, eventVenueId){
-	console.log("createMarker ran");
+	//console.log("createMarker ran");
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
@@ -193,12 +207,18 @@ function createMarker(latLng, eventVenueId){
     marker.setMap(map);
     
    const eventVenue = getEventbyVenueId(eventVenueId)
+   let infowindow = new google.maps.InfoWindow({
+   	content: eventVenue.name.text
+   });
    console.log(eventVenue);
-    marker.addListener('click', function(){
-    	
-    	// $(".modal, .modal-content").addClass("active");
-    	activateModalBox(eventVenue);
-		
+    marker.addListener('mouseover', function(){
+    	infowindow.open(map, marker);
+	});
+	marker.addListener('mouseout', function(){
+		infowindow.close();
+	});
+	marker.addListener('click', function(){
+		activateModalBox(eventVenue);	
 	});
 }
 
