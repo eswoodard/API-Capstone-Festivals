@@ -29,19 +29,24 @@ function getDataFromEventbrite(zipcode, radius){
 	}
 	//console.log("getDataFromEventbrite ran");
 	$.ajax(settings).done(handleEventbriteResponse);
+
 }
 
 function handleEventbriteResponse(response){
 	//console.log('handleEventbriteResponse ran');
+		//console.log(response);
 	STORE.events = response.events;
 	const eventListHTML = response.events.map((item, index) => {
+	
 
 		if (index < 10) {
 			return generateEventListHTML(item);	
 		}
 	});																																							
 	
-	$('#js-event-list-container').html(eventListHTML);		
+	noResultsMessage();	
+	$('#js-event-list-container').html(eventListHTML);	
+
 }
 
 function getVenueAddress(venue) {
@@ -71,6 +76,17 @@ const STORE = {
 
 }
 
+function noResultsMessage(){
+	console.log("noResultsMessage ran")
+	if (STORE.events.length === 0){
+		$('.content-container').html(`
+				<div class = "error-message">
+					<p>No results found.  Please enter another zipcode.</p>
+				</div>
+			`)
+	}
+}
+
 function getEventById(eventId){
 	for(let i = 0; i < STORE.events.length; i++){
 		if(eventId === STORE.events[i].id){
@@ -91,23 +107,25 @@ function getEventbyVenueId(eventVenueId){
 function generateEventListHTML(result) {
 	
 	//console.log("generateEventListHTML ran");
-	//console.log(result);
+	console.log(result);
 	const venueID = result.venue_id;
 	//console.log(venueID);
 	const eventName = result.name.text;
-	const eventLogo = result.logo.url;
+	// const eventLogo = result.logo.url;
 	const eventDateAndTime = result.start.local;
 	const eventMonth = eventDateAndTime.slice(5,8);
 	//console.log(eventMonth);
 	const eventDay = eventDateAndTime.slice(8,10);
+	
+	
 	//console.log(eventDay);
 	getVenueAddress(venueID);
+	
 	
 	return `
 		<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
 			<div class = "title-info">
 				<p class="title">${result.name.text}</p>
-				<img class = "list-logo" src = "${eventLogo}" alt = "logo">
 				<ul class = "month-day">
 					<li class = "month">${eventMonth}</li>
 					<li class = "day">${eventDay}</li>
@@ -116,7 +134,8 @@ function generateEventListHTML(result) {
 			
 		</div>
 	`;
-}
+	}
+// }
 
 function generateModalBoxContent(result){
 	//console.log("generateModalBoxContent ran");
@@ -210,7 +229,7 @@ function createMarker(latLng, eventVenueId){
    let infowindow = new google.maps.InfoWindow({
    	content: eventVenue.name.text
    });
-   console.log(eventVenue);
+   //console.log(eventVenue);
     marker.addListener('mouseover', function(){
     	infowindow.open(map, marker);
 	});
@@ -227,10 +246,18 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 	let address = zipcode;
 	//console.log(address);
 	geocoder.geocode({'address':address}, function(results, status) {
+		//console.log(results);
 		if (status === 'OK') {
-			resultsMap.setCenter(results[0].geometry.location);}
+			resultsMap.setCenter(results[0].geometry.location);
+		}
 		else {
-			alert('Geocode was not successful for the following reason: ' + status);	
+			console.log("error");
+			// alert('Geocode was not successful for the following reason: ' + status);	
+			$('.content-container').html(`
+				<div class = "error-message">
+					<p>No results found.  Please enter another zipcode.</p>
+				</div>
+			`)
 		}
 	});
 }
@@ -247,6 +274,8 @@ function watchSubmit() {
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
 		initMap(query, miles); 
+
+
 	});
 	
 	//console.log('watchSubmit ran');

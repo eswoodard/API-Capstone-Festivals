@@ -21,7 +21,7 @@
 			<legend><h1>Where do you want to have fun?</h1></legend>
 			<label for="search-box">
 				<span>Enter zipcode</span> 
-				<input type="text" name="search-box" id="js-query" placeholder="zipcode" required>
+				<input type="text" name="search-box" id="js-query" placeholder="zipcode" pattern = "[0-9]{5}" title= "Five digit zip code" required>
 			</label>
 			<label for ="search-radius">
 				<select name ="search-radius" id="js-search-radius">
@@ -35,7 +35,7 @@
 			<button id="js-search-button" type="submit">Go!</button>
 		</form>
 	</div> 
-	<!-- <div class = "content-container"> -->
+	<div class = "content-container">
 		<div id="js-event-list-container"></div> 
 		<div id="map"></div>
 		<div id = "myModal" class= "modal">
@@ -43,7 +43,7 @@
 				<div class = "event-information"></div>
 			</div>
 		</div>
-	<!-- </div> -->
+	</div>
 <script src="index.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB5j5LE-Xg_3P5fUJvP-fH53AFbBJ46Dg" async defer></script>
 	
