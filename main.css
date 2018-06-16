@@ -6,62 +6,163 @@
 	box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+
+}
+
+.content-container {
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	height: 90%;
+	
+}
+
+html {
+	background: 
+	/*linear-gradient(rgba(202, 207, 226, 0.25), rgba(202, 207, 226, 0.25)),*/
+	linear-gradient(rgba(212, 217, 223, 0.4), rgba(212, 217, 223, 0.4)),
+	url("images/festival_background_1.jpg") no-repeat center center fixed;
+	background-size: cover;
+}
+
+header, #search-box, h2 {
+	text-align: center;	
+}
+
 header {
-	text-align: center;
-	margin-top: 2em;
-	margin-bottom: 1em;
-	font-size: 3em;
+	margin-top: 10%;
+	margin-bottom: 1%;
 }
 
-#search-box {
-	text-align: center;
+header.main-content{
+	margin-top: 5%;
 }
 
-legend, form {
-	padding-bottom: 1em;
+.go-style, .festival-style {	
+	font-size: 90px;
+}
+
+.go-style, h1, .input-label, .button, .title {
+	font-family: 'Raleway', sans-serif;
+}
+
+
+form {
+	padding-bottom: 2%;
+}
+
+h1, .input-label, .button, .title {
+	color: #2c2f3c;
 }
 
 h1 {
-	font-size: 2em;
+	font-size: 45px;
+}
+
+.input-label {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.input-box {
+	border: #c3c4ce, 5px, solid;
+	/*border-radius: 10px;*/
+	height: 30px;
+	width: 150px;
+	
+}
+
+.go-style {
+	color: #6D264F;	
+}
+
+.festival-style {
+	color: #3E4C7A;
+	font-family: 'Fredoka One', cursive;	
+}
+
+.search-button {
+	margin-top: 2%;
+}
+
+.button {
+	width: 100px;
+	height: 50px;
+	font-size: 20px;
+	background: #8193C1;
+	border: 1px solid #8193C1;
+	border-radius: 10px;
 }
 
 #js-event-list-container {
 	float: left;
-	height: 100%;
-	width: 50%;
+	height: 80%;
+	width: 40%;
+	overflow: auto;
 	/*border: black solid 1px;*/
 }
 
 #map {
   height: 80%;
-  width: 50%;
+  width: 60%;
   float: right;
+  border-radius: 5px;
+
   /*border: black solid 1px;*/
 }
 
 /* Optional: Makes the sample page fill the window. */
-html, body, .content-container {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+#items {
+	margin-right: 2.5%;
 }
 
 .title-info {
 	list-style: none;
-	border: black solid 1px;
+	border: rgba(203, 208, 227, 0.9) solid 1px;
 	border-radius: 5px;
-	padding-top: 2em;
-	padding-bottom: 2em;
-	margin-left: 2em;
-	margin-right: 2em;
-	background-color: #9ACC80;
+	background:rgba(203, 208, 227, 0.9);
+	/*margin-right: 2.5%;*/
+	margin-bottom: 1%;
+	display: inline-flex;
+	align-items: center;
+	width: 100%;
+
+
 	
 }
 
+/*.title-list-logo {
+	float: right;
+	height: 75px;
+	width: 75px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 5px;
+
+
+}*/
+
 .title {
-	text-align: center;
-	margin-right: 3em;
-	padding: 3em, 0;
+	padding-left: 50px;
+	/*max-width: 60%;*/
+	
+
+}
+
+.month-day {
+	list-style: none;
+	/*float: left;*/
+	padding-left: 15px;
+
+
+}
+
+h1.hidden {
+	display: none;
 }
 
 .modal {
@@ -114,12 +215,15 @@ html, body, .content-container {
 
 h2 {
 	font-size: 2em;
-	text-align: center;
 	margin-top: 20px;
 
 }
 
-a:link {
+a {
+	text-decoration: none;
+}
+
+/*a:link {
 	color: black;
 	text-decoration: none;
 }
@@ -132,7 +236,7 @@ a:visited {
 a:hover {
 	color: green;
 	text-decoration: underline;
-}
+}*/
 
 
 

@@ -27,7 +27,7 @@ function getDataFromEventbrite(zipcode, radius){
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
 		}
 	}
-	//console.log("getDataFromEventbrite ran");
+	console.log("getDataFromEventbrite ran");
 	$.ajax(settings).done(handleEventbriteResponse);
 
 }
@@ -39,10 +39,10 @@ function handleEventbriteResponse(response){
 	const eventListHTML = response.events.map((item, index) => {
 	
 
-		if (index < 10) {
+		// if (index < 50) {
 			return generateEventListHTML(item);	
-		}
-	});																																							
+		// }
+	});																																						
 	
 	noResultsMessage();	
 	$('#js-event-list-container').html(eventListHTML);	
@@ -107,7 +107,7 @@ function getEventbyVenueId(eventVenueId){
 function generateEventListHTML(result) {
 	
 	//console.log("generateEventListHTML ran");
-	console.log(result);
+	//console.log(result);
 	const venueID = result.venue_id;
 	//console.log(venueID);
 	const eventName = result.name.text;
@@ -125,21 +125,28 @@ function generateEventListHTML(result) {
 	return `
 		<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
 			<div class = "title-info">
-				<p class="title">${result.name.text}</p>
-				<ul class = "month-day">
+			<ul class = "month-day">
 					<li class = "month">${eventMonth}</li>
 					<li class = "day">${eventDay}</li>
 				</ul>
+				<p class="title">${result.name.text}</p>
+				
 			</div>
 			
 		</div>
 	`;
 	}
+// <img class = "title-list-logo" src= "images/placeholder-image.png" alt = "event logo">
+
 // }
 
 function generateModalBoxContent(result){
 	//console.log("generateModalBoxContent ran");
 	//console.log(result);
+
+	// if(result.logo === null){
+	// 	$("#event-logo").html('images/placeholder-image.jpg');
+	// }
 
 	const eventName = result.name.text;
 	const eventURL = result.url;
@@ -149,7 +156,8 @@ function generateModalBoxContent(result){
 	const eventDayMonth = eventDateAndTime.slice(5,10);
 	const eventYear = eventDateAndTime.slice(0,4);
 	const eventDate = eventDayMonth + '-' + eventYear;
-	const eventTime = eventDateAndTime.slice(11, 16)
+	const eventTime = eventDateAndTime.slice(11, 16);
+	
 	
 
 
@@ -159,7 +167,7 @@ function generateModalBoxContent(result){
 			<h2 class = "event-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
 			</h2>
 		</div>
-		<div class = "event-logo"><img src = "${eventLogo}" alt = "logo"></div>
+		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "logo"></div>
 		<div class = "event-date-time">
 			<ul>
 				<li class = "date">Date: ${eventDate}</li>
@@ -182,10 +190,7 @@ function limitDescriptionText(text){
 function activateModalBox(eventId, eventVenueId){
 	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
-	
 	//console.log(event);
-	
-	
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
 
@@ -262,11 +267,17 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 	});
 }
 
+function hideHeader() {
+	$("h1").addClass("hidden");
+	$("header").addClass("main-content");
+
+}
 
 
 function watchSubmit() {
 	$('#js-search-form').submit(event => {
 		event.preventDefault();
+		hideHeader();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
 		queryTarget.val("");
@@ -278,7 +289,7 @@ function watchSubmit() {
 
 	});
 	
-	//console.log('watchSubmit ran');
+	console.log('watchSubmit ran');
 }
 
 $(bindEventListeners);

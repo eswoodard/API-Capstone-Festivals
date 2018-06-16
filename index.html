@@ -9,30 +9,38 @@
           src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
           crossorigin="anonymous"></script>
-         
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css">
         <link href="main.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Raleway:500|Roboto" rel="stylesheet">
 </head>
-<body>
+<body class="landing-page">
 	<header roles="banner">
-		Festivals
+		<div class= "icon">
+			<!-- <img src = "music-tent.png" alt = "tent icon"> -->
+		</div class="page-title">
+		<a href = "index.html"><span class = "go-style">go</span><span class= "festival-style">Festival!</span></a>
 	</header>
 	<div id="search-box">
-		<form id="js-search-form">
-			<legend><h1>Where do you want to have fun?</h1></legend>
-			<label for="search-box">
-				<span>Enter zipcode</span> 
-				<input type="text" name="search-box" id="js-query" placeholder="zipcode" pattern = "[0-9]{5}" title= "Five digit zip code" required>
-			</label>
-			<label for ="search-radius">
-				<select name ="search-radius" id="js-search-radius">
-					<option value = "10mi">10mi</option>
-					<option value = "15mi" selected>15mi</option>
-					<option value = "20mi">20mi</option>
-					<option value = "25mi">25mi</option>
-					<option value = "30mi">30mi</option>
-				</select>
-			</label>
-			<button id="js-search-button" type="submit">Go!</button>
+		<form id="js-search-form" class="search-form">
+			<legend><h1>Your festival awaits.  Go find it.</h1></legend>
+			<div class = "search-input">
+				<label for="search-box">
+					<span class="input-label">Enter zipcode</span> 
+					<input type="text" name="search-box" id="js-query" class = "input-box"placeholder="12345" pattern = "[0-9]{5}" title= "Five digit zip code" required>
+				</label>
+				<label for ="search-radius">
+					<select name ="search-radius" id="js-search-radius">
+						<option value = "10mi">10mi</option>
+						<option value = "15mi" selected>15mi</option>
+						<option value = "20mi">20mi</option>
+						<option value = "25mi">25mi</option>
+						<option value = "30mi">30mi</option>
+					</select>
+				</label>
+			</div>
+			<div class = "search-button">
+				<button id="js-search-button" class = "button" type="submit">Go!</button>
+			</div>
 		</form>
 	</div> 
 	<div class = "content-container">
