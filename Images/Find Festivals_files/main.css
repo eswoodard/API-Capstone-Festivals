@@ -17,7 +17,6 @@ html, body {
 .content-container {
 	margin-right: 2.5%;
 	margin-left: 2.5%;
-	padding-bottom: 2.5%;
 	height: 90%;
 	
 }
@@ -30,7 +29,7 @@ html {
 	background-size: cover;
 }
 
-header, #search-box, h2, .error-message {
+header, #search-box, h2 {
 	text-align: center;	
 }
 
@@ -40,14 +39,14 @@ header {
 }
 
 header.main-content{
-	margin-top: 3%;
+	margin-top: 5%;
 }
 
 .go-style, .festival-style {	
 	font-size: 90px;
 }
 
-.go-style, h1, .input-label, .button, .title, .event-title, .event-description, .error-message{
+.go-style, h1, .input-label, .button, .title {
 	font-family: 'Raleway', sans-serif;
 }
 
@@ -56,7 +55,7 @@ form {
 	padding-bottom: 2%;
 }
 
-h1, .input-label, .button, .title, .description-and-more, .event-list {
+h1, .input-label, .button, .title {
 	color: #2c2f3c;
 }
 
@@ -71,12 +70,13 @@ h1 {
 
 .input-box {
 	border: #c3c4ce, 5px, solid;
+	/*border-radius: 10px;*/
 	height: 30px;
 	width: 150px;
 	
 }
 
-.go-style, .event-name {
+.go-style {
 	color: #6D264F;	
 }
 
@@ -103,7 +103,6 @@ h1 {
 	height: 80%;
 	width: 40%;
 	overflow: auto;
-
 	/*border: black solid 1px;*/
 }
 
@@ -113,15 +112,15 @@ h1 {
   float: right;
   border-radius: 5px;
 
-
   /*border: black solid 1px;*/
 }
 
+/* Optional: Makes the sample page fill the window. */
 #items {
 	margin-right: 2.5%;
 }
 
-.event-list {
+.title-info {
 	list-style: none;
 	border: rgba(203, 208, 227, 0.9) solid 1px;
 	border-radius: 5px;
@@ -131,80 +130,44 @@ h1 {
 	display: inline-flex;
 	align-items: center;
 	width: 100%;
-	margin-right: 2.5%;	
+
+
 	
 }
 
-.event-list:hover {
-	background-color: #A7ABBA;
-	border: #A7ABBA solid 1px;
-}
+/*.title-list-logo {
+	float: right;
+	height: 75px;
+	width: 75px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 5px;
+
+
+}*/
 
 .title {
-	padding-left: 40px;
-	padding-right: 10px;
-	font-size: 18px;	
+	padding-left: 50px;
+	/*max-width: 60%;*/
+	
+
 }
 
 .month-day {
 	list-style: none;
+	/*float: left;*/
 	padding-left: 15px;
-	padding-right: 15px;	
-}
 
-.month, .day{
-	font-family: 'Lato', sans-serif;
-	font-size: 25px;
-	font-weight: 300;
-}
 
-.day {
-	text-align: center;
 }
 
 h1.hidden {
 	display: none;
 }
 
-.event-title {
-	padding-top: 10px;
-	font-size: 2em;
-	color: #6D264F;	
-
-}
-
-.event-logo {
-	display: flex;
-	justify-content: center;
-}
-
-.date-time {
-	list-style: none;
-	text-align: center;
-	font-family: 'Lato', sans-serif;
-	font-size: 20px;
-	font-weight: 700;
-	margin-top: 5%;
-}
-
-.description-and-more {
-	text-align: left;
-	margin-right: 25px;
-	margin-left: 25px;
-	margin-top: 5%;
-	margin-bottom: 10%;
-}
-
-.event-link {
-	text-align: center;
-	font-family: 'Lato', sans-serif;
-	font-size: 20px;
-	font-weight: 700;
-	
-}
-
 .modal {
-	display: none;
+	visibility: hidden;
+	/*display: none;*/
 	position: fixed;
 	z-index: 1;
 	left: 0;
@@ -217,24 +180,22 @@ h1.hidden {
 }
 
 .modal.active {
-	display: block;
+	visibility: visible;
 }
 
 .modal-content {
-	display: none;
+	visibility: hidden;
 	background-color: #fefefe;
 	/*margin-top: 15% auto;*/
 	margin: 15% auto;
 	padding-bottom: 20px;
 	border: 1px solid #888;
-	border-radius: 10px;
 	width: 80%;
 	height: 60%;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .modal-content.active{
-	display: block;
+	visibility: visible;
 }
 
 .close {
@@ -252,20 +213,14 @@ h1.hidden {
 	cursor: pointer;
 }
 
+h2 {
+	font-size: 2em;
+	margin-top: 20px;
 
+}
 
 a {
 	text-decoration: none;
-	color: #6D264F;
-}
-
-.more {
-	color: blue;
-}
-
-.error-message {
-	font-size: 30px;
-
 }
 
 /*a:link {

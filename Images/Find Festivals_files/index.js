@@ -113,28 +113,31 @@ function generateEventListHTML(result) {
 	const eventName = result.name.text;
 	// const eventLogo = result.logo.url;
 	const eventDateAndTime = result.start.local;
-	let eventDate = moment(eventDateAndTime).format("MMM Do");
-	//console.log(eventDate);
-	//console.log(eventDateAndTime);
-	const eventMonth = eventDate.slice(0,4);
+	console.log(eventDateAndTime);
+	const eventMonth = eventDateAndTime.slice(5,8);
 	//console.log(eventMonth);
-	const eventDay = eventDate.slice(4,-2);
-	//console.log(eventDay);
+	const eventDay = eventDateAndTime.slice(8,10);
+	let eventDate = moment("2018-10-12T09:00:00").format();
+	console.log(eventDate);
+	
+	
+	// console.log(eventDay);
 	getVenueAddress(venueID);
 	
 	
 	return `
-	<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
-			<div class = "event-list grow">	
-				<ul class = "month-day">
-					<li class = "month h-line">${eventMonth}</li>
-	 				<li class = "day">${eventDay}</li>
+		<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
+			<div class = "title-info">
+			<ul class = "month-day">
+					<li class = "month">${eventMonth}</li>
+					<li class = "day">${eventDay}</li>
 				</ul>
-				<div class="line"></div>
-				<p class="title">${result.name.text}</p>	
-	 		</div>
-	 	</div>
-	 	 `;
+				<p class="title">${result.name.text}</p>
+				
+			</div>
+			
+		</div>
+	`;
 	}
 // <img class = "title-list-logo" src= "images/placeholder-image.png" alt = "event logo">
 
@@ -153,12 +156,14 @@ function generateModalBoxContent(result){
 	const eventLogo = result.logo.url;
 	const eventDescription = result.description.text;
 	const eventDateAndTime = result.start.local;
-	let eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
-	console.log(eventDateWithTime);
-	const eventDate = eventDateWithTime.slice(0,13);
-	console.log(eventDate);
-	const eventTime = eventDateWithTime.slice(15, 23);
-	console.log(eventTime);
+	const eventDayMonth = eventDateAndTime.slice(5,10);
+	const eventYear = eventDateAndTime.slice(0,4);
+	const eventDate = eventDayMonth + '-' + eventYear;
+	const eventTime = eventDateAndTime.slice(11, 16);
+	
+	
+
+
 	
 		$('.event-information').html(`
 		<div class = "eventName">
@@ -167,12 +172,12 @@ function generateModalBoxContent(result){
 		</div>
 		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "logo"></div>
 		<div class = "event-date-time">
-			<ul class= "date-time">
+			<ul>
 				<li class = "date">Date: ${eventDate}</li>
 				<li class = "time">Time: ${eventTime}</li>
 			</ul>
 		</div>
-		<div class = "event-description"><p class = "description-and-more"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
+		<div class = "event-description"><p> <span class = "description-text">${eventDescription}</span><a href = "${eventURL}" target = "_blank">...more</a></p></div>
 		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for additional event information and ticketing</a></div>
 		`);	
 
@@ -181,7 +186,7 @@ function generateModalBoxContent(result){
 
 function limitDescriptionText(text){
 	$('.description-text').text(function(index,currentText){
-		return currentText.substr(0,700);
+		return currentText.substr(0,550);
 	});
 }
 
@@ -203,6 +208,7 @@ function bindEventListeners(){
 		if (event.target == $(".content-container")){
 			$(".modal, .modal-content").removeClass("active");
 		}
+
 	}
 	watchSubmit();		
 }
@@ -229,10 +235,9 @@ function createMarker(latLng, eventVenueId){
     
    const eventVenue = getEventbyVenueId(eventVenueId)
    let infowindow = new google.maps.InfoWindow({
-   	content: eventVenue.name.text,
-   	maxWidth: 150,
+   	content: eventVenue.name.text
    });
-   console.log(eventVenue);
+   //console.log(eventVenue);
     marker.addListener('mouseover', function(){
     	infowindow.open(map, marker);
 	});
