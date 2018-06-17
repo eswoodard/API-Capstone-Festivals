@@ -66,7 +66,7 @@ function handleVenueAddress(data){
 	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
 	let eventVenueId = data.id;
-	//console.log(eventVenueId);
+	console.log(eventVenueId);
 	//console.log(venueLatLng);	
 	createMarker(venueLatLng, eventVenueId);	
 }
@@ -83,8 +83,22 @@ function noResultsMessage(){
 				<div class = "error-message">
 					<p>No results found.  Please enter another zipcode.</p>
 				</div>
+				<div class = "error-button">	
+					<button class = "button" type = "submit" >Try Again!</button>
+				</div>
 			`)
+		$("#search-box").addClass("hidden");
+		$(".error-button").on("click", event => {
+			event.preventDefault();
+	 		pageReload();
+	 });
 	}
+
+}
+
+function pageReload(){
+	//console.log("pageReload ran");
+	location.reload();
 }
 
 function getEventById(eventId){
@@ -95,9 +109,9 @@ function getEventById(eventId){
 	}
 }
 
-function getEventbyVenueId(eventVenueId){
+function getEventByVenueId(eventByVenueId){
 	for(let i = 0; i < STORE.events.length; i++){
-		if(eventVenueId === STORE.events[i].venue_id){
+		if(eventByVenueId === STORE.events[i].venue_id){
 			return STORE.events[i];
 		}
 	}
@@ -154,11 +168,11 @@ function generateModalBoxContent(result){
 	const eventDescription = result.description.text;
 	const eventDateAndTime = result.start.local;
 	let eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
-	console.log(eventDateWithTime);
+	//console.log(eventDateWithTime);
 	const eventDate = eventDateWithTime.slice(0,13);
-	console.log(eventDate);
+	//console.log(eventDate);
 	const eventTime = eventDateWithTime.slice(15, 23);
-	console.log(eventTime);
+	//console.log(eventTime);
 	
 		$('.event-information').html(`
 		<div class = "eventName">
@@ -185,14 +199,23 @@ function limitDescriptionText(text){
 	});
 }
 
-function activateModalBox(eventId, eventVenueId){
+function activateModalBox(eventId){
 	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
-	//console.log(event);
+	//const event1 = getEventbyVenueId(eventByVenueId);
+	console.log(eventId);
+	console.log(event);
+	//console.log(eventByVenueId);
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
 
 }
+
+function activateModalBoxWithMarker(eventByVenueID){
+	generateModalBoxContent(eventByVenueID);
+	$(".modal, .modal-content").addClass("active");
+}
+
 
 function bindEventListeners(){
 	$(".close").on("click", function(){
@@ -219,20 +242,23 @@ function initMap(query, miles) {
 	//console.log("initMap ran");
 }
 
-function createMarker(latLng, eventVenueId){
+function createMarker(latLng, eventByVenueId){
 	//console.log("createMarker ran");
+	console.log(eventByVenueId);
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
 
     marker.setMap(map);
     
-   const eventVenue = getEventbyVenueId(eventVenueId)
+   const eventVenue = getEventByVenueId(eventByVenueId)
+   console.log(eventVenue);
    let infowindow = new google.maps.InfoWindow({
    	content: eventVenue.name.text,
    	maxWidth: 150,
    });
-   console.log(eventVenue);
+   
+   //console.log(eventVenue);
     marker.addListener('mouseover', function(){
     	infowindow.open(map, marker);
 	});
@@ -240,7 +266,7 @@ function createMarker(latLng, eventVenueId){
 		infowindow.close();
 	});
 	marker.addListener('click', function(){
-		activateModalBox(eventVenue);	
+		activateModalBoxWithMarker(eventVenue);	
 	});
 }
 

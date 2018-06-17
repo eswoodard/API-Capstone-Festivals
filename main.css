@@ -19,7 +19,7 @@ html, body {
 	margin-left: 2.5%;
 	padding-bottom: 2.5%;
 	height: 90%;
-	
+	s
 }
 
 html {
@@ -112,6 +112,7 @@ h1 {
   width: 60%;
   float: right;
   border-radius: 5px;
+  
 
 
   /*border: black solid 1px;*/
@@ -126,6 +127,7 @@ h1 {
 	border: rgba(203, 208, 227, 0.9) solid 1px;
 	border-radius: 5px;
 	background:rgba(203, 208, 227, 0.9);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	/*margin-right: 2.5%;*/
 	margin-bottom: 1%;
 	display: inline-flex;
@@ -266,6 +268,14 @@ a {
 .error-message {
 	font-size: 30px;
 
+}
+
+#search-box.hidden {
+	display: none;
+}
+
+.error-button {
+	margin-left: 50%;
 }
 
 /*a:link {
