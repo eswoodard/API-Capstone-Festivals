@@ -26,7 +26,7 @@ html {
 	background: 
 	/*linear-gradient(rgba(202, 207, 226, 0.25), rgba(202, 207, 226, 0.25)),*/
 	linear-gradient(rgba(212, 217, 223, 0.4), rgba(212, 217, 223, 0.4)),
-	url("https://eswoodard.github.io/festival_background_1.jpg") no-repeat center center fixed;
+	url("images/festival_background_1.jpg") no-repeat center center fixed;
 	background-size: cover;
 }
 
