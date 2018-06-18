@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-	<title>Find Festivals</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content = "Search for and find festivals anywhere.">
+	<title>goFestival!</title>
 	<script
           src="https://code.jquery.com/jquery-3.2.1.min.js"
           integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -15,45 +16,48 @@
         <link href="main.css" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Lato:300,700|Raleway:500|Roboto" rel="stylesheet">
 </head>
-<body class="landing-page">
-	<header roles="banner">
-		<div class= "icon">
-			<!-- <img src = "music-tent.png" alt = "tent icon"> -->
-		</div class="page-title">
-		<a href = "index.html"><span class = "go-style">go</span><span class= "festival-style">Festival!</span></a>
-	</header>
-	<div id="search-box">
-		<form id="js-search-form" class="search-form">
-			<legend><h1>Your festival awaits.  Go find it.</h1></legend>
-			<div class = "search-input">
-				<label for="search-box">
-					<span class="input-label">Enter zipcode</span> 
-					<input type="text" name="search-box" id="js-query" class = "input-box" pattern = "[0-9]{5}" title= "Five digit zip code" required>
-				</label>
-				<label for ="search-radius">
-					<select name ="search-radius" id="js-search-radius">
-						<option value = "10mi">10mi</option>
-						<option value = "15mi" selected>15mi</option>
-						<option value = "20mi">20mi</option>
-						<option value = "25mi">25mi</option>
-						<option value = "30mi">30mi</option>
-					</select>
-				</label>
-			</div>
-			<div class = "search-button">
-				<button id="js-search-button" class = "button" type="submit">Go!</button>
-			</div>
-		</form>
-	</div> 
-	<div class = "content-container">
-		<div id="js-event-list-container"></div> 
-		<div id="map"></div>
-		<div id = "myModal" class= "modal">
-			<div class = "modal-content"><span class = "close">&times;</span>
-				<div class = "event-information"></div>
-			</div>
+<body>
+	<div class="landing-page">
+		<header roles="banner">
+		<div class="page-title">
+			<a href = "index.html"><span class = "go-style">go</span><span class= "festival-style">Festival!</span></a>
+		</div>	
+		</header>
+		<div id="search-box">
+			<form id="js-search-form" class="search-form">
+				<legend><h1>Your festival awaits.  Go find it.</h1></legend>
+				<div class = "search-input">
+					<label for="search-box">
+						<span class="input-label">Enter zipcode</span> 
+						<input type="text" name="search-box" id="js-query" class = "input-box" pattern = "[0-9]{5}" title= "Five digit zip code" required>
+					</label>
+					<label for ="search-radius">
+						<select name ="search-radius" id="js-search-radius">
+							<option value = "10mi">10mi</option>
+							<option value = "15mi" selected>15mi</option>
+							<option value = "20mi">20mi</option>
+							<option value = "25mi">25mi</option>
+							<option value = "30mi">30mi</option>
+						</select>
+					</label>
+				</div>
+				<div class = "search-button">
+					<button id="js-search-button" class = "button" type="submit">Go!</button>
+				</div>
+			</form>
 		</div>
 	</div>
+	<main role = "main">
+		<div class = "content-container">
+			<div id="js-event-list-container"></div> 
+				<div id="map"></div>	
+			<div id = "myModal" class= "modal">
+				<div class = "modal-content"><span class = "close">&times;</span>
+					<div class = "event-information"></div>
+				</div>
+			</div>
+		</div>
+	</main> 
 <script src="index.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB5j5LE-Xg_3P5fUJvP-fH53AFbBJ46Dg" async defer></script>
 

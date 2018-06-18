@@ -21,7 +21,7 @@ function getDataFromEventbrite(zipcode, radius){
 	const settings = {
 		"async": true,
 		"crossDomain": true,
-		"url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=${radius}&expand=organizer,%20venue&sort_by=date`,
+		"url": `https://www.eventbriteapi.com/v3/events/search/?q=festival&location.address=${zipcode}&location.within=${radius}&expand=organizer,%20venue`,
 		"method": "GET",
 		"headers": {
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
@@ -80,12 +80,12 @@ const STORE = {
 function noResultsMessage(){
 	//console.log("noResultsMessage ran")
 	if (STORE.events.length === 0){
-		$('main').html(`
+		$('.content-container').html(`
 				<div class = "error-message">
 					<p>No results found.  Please enter another zipcode.</p>
 				</div>
 				<div class = "error-button">	
-					<button class = "err-button button" type = "submit" >Try Again!</button>
+					<button class = "button" type = "submit" >Try Again!</button>
 				</div>
 			`)
 		$("#search-box").addClass("hidden");
@@ -196,7 +196,7 @@ function generateModalBoxContent(result){
 
 function limitDescriptionText(text){
 	$('.description-text').text(function(index,currentText){
-		return currentText.substr(0,650);
+		return currentText.substr(0,700);
 	});
 }
 
@@ -295,7 +295,6 @@ function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
 function hideHeader() {
 	$("h1").addClass("hidden");
 	$("header").addClass("main-content");
-	$(".search-input").addClass("main-content");
 
 }
 
