@@ -306,7 +306,7 @@ function watchSubmit() {
 		hideHeader();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
-		queryTarget.val("");
+		//queryTarget.val("");
 		const queryRadius = $(event.currentTarget).find('#js-search-radius');
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);

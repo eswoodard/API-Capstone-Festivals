@@ -1,0 +1,120 @@
+
+/*Screen sizes 600px and up*/
+
+@media (min-width: 600px) {
+
+.go-style, .festival-style {
+	font-size: 6rem;
+}
+
+h1 {
+	font-size: 2rem;
+	margin-top: 2rem;
+
+}
+
+.search-input {
+	margin-top: 7rem;
+
+}
+
+.input-label {
+	font-size: 1.5rem;
+	padding-right: 0.5rem;
+}
+
+.input-box {
+	height: 2rem;
+	width: 9rem;
+	
+}
+#js-search-radius {
+	font-size: 1rem;
+}
+
+.button {
+	width: 8rem;
+	height: 3.25rem;
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+.event-title {
+	font-size: 2rem;
+}
+
+.date-time, .event-link {
+	font-size: 1.5rem;
+}
+
+.description-and-more, .title, .month, .day { 
+	font-size: 1.2rem;
+}
+
+.event-logo {
+	display: flex;
+	justify-content: center;
+	margin-right: 1rem;
+	margin-left: 1rem;
+}
+
+.event-logo img {
+	width: 100%;
+}
+
+.modal-content {
+	height: 70%;
+}
+
+
+}
+
+@media (min-width: 900px) {
+
+html, body {
+  overflow-y: hidden;
+}
+
+.content-container {
+	display: block;
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+	padding-bottom: 2.5%;
+	height: 90%;
+}
+
+#js-event-list-container {
+	float: left;
+	height: 80%;
+	width: 40%;
+	overflow: auto;
+	margin-top: 0;
+}
+
+#map {
+  height: 80%;	
+  width: 60%;
+  float: left;
+ } 
+
+ .modal-content {
+	height:60%;
+}
+
+}
+
+@media (min-width: 1800px) {
+
+	.content-container {
+		max-width: 80%;
+		margin: auto;
+	}
+
+	.modal-content {
+		max-width: 900px;
+	}
+
+	.event-logo img {
+		max-width: 60%;
+	}
+}

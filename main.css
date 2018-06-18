@@ -9,16 +9,11 @@
 html, body, main {
   height: 100%;
   margin: 0;
-  padding: 0;
-  /*overflow-y: hidden;*/ 
+  padding: 0; 
 }
 
 
 .content-container {
-	/*Add to Media query for larger screen
-	margin-right: 2.5%;
-	margin-left: 2.5%;
-	padding-bottom: 2.5%;*/
 	margin-right: 4%;
 	margin-left: 4%;
 	margin-top: 4%;
@@ -29,11 +24,6 @@ html, body, main {
 }
 
 #js-event-list-container {	
-	/*add to media query for larger screen
-	width: 40%;
-	float: left;
-	overflow: auto;
-	height: 80%;*/
 	width: 100%;
 	height: 40%;
 	margin-top: 4%;	
@@ -41,7 +31,6 @@ html, body, main {
 
 html {
 	background: 
-	/*linear-gradient(rgba(202, 207, 226, 0.25), rgba(202, 207, 226, 0.25)),*/
 	linear-gradient(rgba(212, 217, 223, 0.4), rgba(212, 217, 223, 0.4)),
 	url("Images/festival_background_1.jpg") no-repeat center center fixed;
 	background-size: cover;
@@ -53,8 +42,8 @@ header, #search-box, h2, .error-message {
 }
 
 header {
-	margin-top: /*10%;*/3rem;
-	margin-bottom: /*1%;*/1rem;
+	margin-top: 3rem;
+	margin-bottom: 1rem;
 }
 
 header.main-content{
@@ -67,11 +56,11 @@ header.main-content{
 }
 
 .go-style, .festival-style {	
-	font-size: /*90px;*/ 4rem;
+	font-size: 4rem;
 	
 }
 
-.go-style, h1, .input-label, .button, .title, .event-title, .event-description, .error-message, #js-search-radius{
+.go-style, h1, .input-label, .button, .title, .event-title, .event-description, .error-message {
 	font-family: 'Raleway', sans-serif;
 }
 
@@ -118,7 +107,7 @@ h1 {
 }
 
 #js-search-radius {
-
+	font-size: 1rem;
 }
 
 .search-button {
@@ -208,16 +197,10 @@ h1.hidden {
 }
 
 .event-logo {
-	/*display: flex;
-	justify-content: center;
-	margin-right: 1rem;
-	margin-left: 1rem;*/
 	display: none;
 }
 
-.event-logo img {
-	width: 100%;
-}
+
 
 .date-time {
 	list-style: none;
@@ -243,6 +226,8 @@ h1.hidden {
 	font-family: 'Lato', sans-serif;
 	font-size: /*20px;*/.8rem;
 	font-weight: 700;
+	margin-left: .5em;
+	margin-right: .5em;
 	
 }
 
@@ -264,6 +249,7 @@ h1.hidden {
 }
 
 .modal-content {
+	overflow: scroll;
 	display: none;
 	background-color: #eee;
 	/*margin-top: 15% auto;*/
@@ -274,7 +260,6 @@ h1.hidden {
 	width: 80%;
 	height: 80%;
 	max-width: 640px;
-	
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 /* for media query:
 	height 60%;
@@ -345,6 +330,9 @@ a:hover {
 	color: green;
 	text-decoration: underline;
 }*/
+
+
+
 
 
 
