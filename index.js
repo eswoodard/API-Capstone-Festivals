@@ -296,6 +296,8 @@ function hideHeader() {
 	$("h1").addClass("hidden");
 	$("header").addClass("main-content");
 	$(".search-input").addClass("main-content");
+	$(".button").addClass("main-content");
+
 
 }
 

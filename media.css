@@ -3,111 +3,150 @@
 
 @media (min-width: 600px) {
 
-.go-style, .festival-style {
-	font-size: 6rem;
-}
+	.go-style, .festival-style {
+		font-size: 5rem;
+	}
 
-h1 {
-	font-size: 2rem;
-	margin-top: 2rem;
+	h1 {
+		font-size: 2rem;
+		margin-top: 2rem;
 
-}
+	}
 
-.search-input {
-	margin-top: 7rem;
+	.search-input {
+		margin-top: 7rem;
 
-}
+	}
 
-.input-label {
-	font-size: 1.5rem;
-	padding-right: 0.5rem;
-}
+	.input-label {
+		font-size: 1rem;
+		padding-right: 0.5rem;
+	}
 
-.input-box {
-	height: 2rem;
-	width: 9rem;
-	
-}
-#js-search-radius {
-	font-size: 1rem;
-}
+	.input-box {
+		height: 2rem;
+		width: 9rem;
+		
+	}
+	#js-search-radius {
+		font-size: 1rem;
+	}
 
-.button {
-	width: 8rem;
-	height: 3.25rem;
-	font-size: 1.5rem;
-	margin-top: 1.5rem;
-}
+	.button {
+		width: 8rem;
+		height: 3rem;
+		font-size: 1.5rem;
+		
+	}
 
-.event-title {
-	font-size: 2rem;
-}
+	.event-title {
+		font-size: 1.5rem;
+	}
 
-.date-time, .event-link {
-	font-size: 1.5rem;
-}
+	.date-time, .event-link {
+		font-size: 1.3rem;
+	}
 
-.description-and-more, .title, .month, .day { 
-	font-size: 1.2rem;
-}
+	.description-and-more, .title  { 
+		font-size: 1rem;
+	}
 
-.event-logo {
-	display: flex;
-	justify-content: center;
-	margin-right: 1rem;
-	margin-left: 1rem;
-}
+	.month, .day {
+		font-size: 1.2rem
+	}
 
-.event-logo img {
-	width: 100%;
-}
+	.event-logo {
+		display: flex;
+		justify-content: center;
+		margin-right: 1rem;
+		margin-left: 1rem;
+	}
 
-.modal-content {
-	height: 70%;
-}
+	.event-logo img {
+		width: 100%;
+	}
+
+	.modal-content {
+		height: 70%;
+	}
 
 
 }
 
 @media (min-width: 900px) {
 
-html, body {
-  overflow-y: hidden;
+
+	.content-container {
+		display: block;
+		margin-right: 2.5%;
+		margin-left: 2.5%;
+		/*padding-bottom: 2.5%;*/
+		height: 90%;
+		margin-top: 2%;
+	}
+
+	#js-event-list-container {
+		float: left;
+		height: 80%;
+		width: 40%;
+		overflow: auto;
+		margin-top: 0;
+	}
+
+	.map-wrapper {
+		width: 60%;
+		height: 80%;
+		float: left;
+	}
+
+	#map {
+	  height: 100%;	
+	  width: 100%;
+	  float: left;
+	 } 
+
+	 .modal-content {
+		height:60%;
+	}
+
+	.description-and-more { 
+		font-size: 1rem;
 }
 
-.content-container {
-	display: block;
-	margin-right: 2.5%;
-	margin-left: 2.5%;
-	padding-bottom: 2.5%;
-	height: 90%;
+
+
 }
 
-#js-event-list-container {
-	float: left;
-	height: 80%;
-	width: 40%;
-	overflow: auto;
-	margin-top: 0;
-}
+@media (min-width: 1200px){
 
-#map {
-  height: 80%;	
-  width: 60%;
-  float: left;
- } 
+/*	html, body {
+  		overflow-y: hidden;
+	}*/
 
- .modal-content {
-	height:60%;
-}
+	#js-event-list-container, .map-wrapper {
+		height: 90%;
+
+	}
+
+	.description-and-more {
+		font-size: 1rem;
+	}
+
+	.title {
+		font-size: 1.2rem;
+	}
+
 
 }
 
 @media (min-width: 1800px) {
 
+
 	.content-container {
 		max-width: 80%;
-		margin: auto;
+		margin-left: auto;
+		margin-right: auto;
+
 	}
 
 	.modal-content {
@@ -116,5 +155,9 @@ html, body {
 
 	.event-logo img {
 		max-width: 60%;
+	}
+
+	.description-and-more {
+		font-size: 1.2rem;
 	}
 }
