@@ -15,7 +15,8 @@
 
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 let map;
-
+let focusableElementsString = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]";
+let focusedElementBeforeModal;
 
 function getDataFromEventbrite(zipcode, radius){
 	const settings = {
@@ -66,7 +67,7 @@ function handleVenueAddress(data){
 	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
 	let eventVenueId = data.id;
-	console.log(eventVenueId);
+	//console.log(eventVenueId);
 	//console.log(venueLatLng);	
 	createMarker(venueLatLng, eventVenueId);	
 }
@@ -129,7 +130,7 @@ function generateEventListHTML(result) {
 	const eventName = result.name.text;
 	// const eventLogo = result.logo.url;
 	const eventDateAndTime = result.start.local;
-	let eventDate = moment(eventDateAndTime).format("MMM Do");
+	const eventDate = moment(eventDateAndTime).format("MMM Do");
 	//console.log(eventDate);
 	//console.log(eventDateAndTime);
 	const eventMonth = eventDate.slice(0,4);
@@ -140,8 +141,8 @@ function generateEventListHTML(result) {
 	
 	
 	return `
-	<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
-			<div class = "event-list grow">	
+	<div id = "items" role = "button" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
+			<div class = "event-list">	
 				<ul class = "month-day">
 					<li class = "month">${eventMonth}</li>
 	 				<li class = "day">${eventDay}</li>
@@ -169,7 +170,7 @@ function generateModalBoxContent(result){
 	const eventLogo = result.logo.url;
 	const eventDescription = result.description.text;
 	const eventDateAndTime = result.start.local;
-	let eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
+	const eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
 	//console.log(eventDateWithTime);
 	const eventDate = eventDateWithTime.slice(0,13);
 	//console.log(eventDate);
@@ -178,17 +179,17 @@ function generateModalBoxContent(result){
 	
 		$('.event-information').html(`
 		<div class = "eventName">
-			<h2 class = "event-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
+			<h2 class = "event-title" id="dialog-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
 			</h2>
 		</div>
-		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "logo"></div>
+		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "event logo"></div>
 		<div class = "event-date-time">
 			<ul class= "date-time">
 				<li class = "date">Date: ${eventDate}</li>
 				<li class = "time">Time: ${eventTime}</li>
 			</ul>
 		</div>
-		<div class = "event-description"><p class = "description-and-more"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
+		<div class = "event-description"><p class = "description-and-more" id="dialog-description"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
 		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for additional event information and ticketing</a></div>
 		`);	
 
@@ -201,21 +202,79 @@ function limitDescriptionText(text){
 	});
 }
 
-function activateModalBox(eventId){
+function activateModalBox(eventId, obj){
 	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
 	//const event1 = getEventbyVenueId(eventByVenueId);
-	console.log(eventId);
-	console.log(event);
+	//console.log(eventId);
+	//console.log(event);
 	//console.log(eventByVenueId);
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
+	$("body").on('focusin', '.content-container', function() {
+		setFocusToFirstItemInModal($(".modal, .modal-content"));
+	});
+	$(".modal, .modal-content").keydown(function(event) {
+		trapTabKey($(this), event);
+	});
+	focusedElementBeforeModal = $(':focus');
+	
 
 }
 
-function activateModalBoxWithMarker(eventByVenueID){
+function activateModalBoxWithMarker(eventByVenueID, obj){
 	generateModalBoxContent(eventByVenueID);
 	$(".modal, .modal-content").addClass("active");
+	setFocusToFirstItemInModal($(".modal"));
+}
+
+
+function trapEscapeKey(obj, event) {
+	console.log("trapEscapeKey ran");
+	if (event.which == 27) {
+		let o = obj.find('*');
+		let cancelElement;
+		cancelElement = o.filter(".close")
+		cancelElement.click();
+		event.preventDefault();
+	}
+}
+
+function trapTabKey(obj, event){
+	if (event.which == 9) {
+		let o = obj.find('*');
+		let focusableItems;
+		focusableItems = o.filter(focusableElementsString).filter(':visible');
+		let focusedItem;
+		focusedItem = $(':focus');
+		let numberOfFocusableItems;
+		numberOfFocusableItems = focusableItems.length;
+		let focusedItemIndex;
+		focusedItemIndex = focusableItems.index(focusedItem);
+		if(event.shiftKey){
+			if(focusedItemIndex == 0) {
+				focusableItems.get(numberOfFocusableItems -1).focus();
+				event.preventDefault();
+			}
+		}
+		else {
+			if(focusedItemIndex == numberOfFocusableItems -1) {
+				focusableItems.get(0).focus();
+				event.preventDefault();
+			}
+		}
+	}
+}
+
+function setInitialFocusModal(obj){
+	let o = obj.find('*');
+	let focusableItems;
+	focusableItems = o.filter(focusableElementsString).filter(':visible').first().focus();
+}
+
+function setFocusToFirstItemInModal(obj){
+	let o = obj.find('*');
+	o.filter(focusableElementsString).filter(':visible').first().focus();
 }
 
 
@@ -224,11 +283,18 @@ function bindEventListeners(){
 		//console.log("modal close");
 		$(".modal, .modal-content").removeClass("active");
 	});
-	window.onclick = function(event){
-		if (event.target == $(".content-container")){
-			$(".modal, .modal-content").removeClass("active");
-		}
-	}
+
+	// window.onclick = function(event){
+	// 	if (event.target == $(".content-container")){
+	// 		$(".modal, .modal-content").removeClass("active");
+			
+	// 	}
+
+		$(".modal, .modal-content").keydown(function(event) {
+		trapEscapeKey($(this), event);
+		focusedElementBeforeModal.focus();
+		});
+	
 	watchSubmit();		
 }
       
@@ -246,7 +312,7 @@ function initMap(query, miles) {
 
 function createMarker(latLng, eventByVenueId){
 	//console.log("createMarker ran");
-	console.log(eventByVenueId);
+	//console.log(eventByVenueId);
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
@@ -254,7 +320,7 @@ function createMarker(latLng, eventByVenueId){
     marker.setMap(map);
     
    const eventVenue = getEventByVenueId(eventByVenueId)
-   console.log(eventVenue);
+   //console.log(eventVenue);
    let infowindow = new google.maps.InfoWindow({
    	content: eventVenue.name.text,
    	maxWidth: 150,
