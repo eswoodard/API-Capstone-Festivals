@@ -178,17 +178,17 @@ function generateModalBoxContent(result){
 	
 		$('.event-information').html(`
 		<div class = "eventName">
-			<h2 class = "event-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
+			<h2 class = "event-title" id="dialog1Title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
 			</h2>
 		</div>
-		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "logo"></div>
+		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "event logo"></div>
 		<div class = "event-date-time">
 			<ul class= "date-time">
 				<li class = "date">Date: ${eventDate}</li>
 				<li class = "time">Time: ${eventTime}</li>
 			</ul>
 		</div>
-		<div class = "event-description"><p class = "description-and-more"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
+		<div class = "event-description"><p class = "description-and-more" id="dialog1Desc"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
 		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for additional event information and ticketing</a></div>
 		`);	
 
