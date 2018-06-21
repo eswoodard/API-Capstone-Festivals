@@ -36,7 +36,7 @@
 		width: 8rem;
 		height: 3rem;
 		font-size: 1.5rem;
-		
+		margin-top: 0;
 	}
 
 	.event-title {
@@ -85,9 +85,9 @@
 		margin-top: 2%;
 	}
 
-	#js-event-list-container {
+	.js-event-list-container {
 		float: left;
-		height: 80%;
+		height: 90%;
 		width: 40%;
 		overflow: auto;
 		margin-top: 0;
@@ -95,7 +95,7 @@
 
 	.map-wrapper {
 		width: 60%;
-		height: 80%;
+		height: 90%;
 		float: left;
 	}
 
@@ -103,6 +103,7 @@
 	  height: 100%;	
 	  width: 100%;
 	  float: left;
+	  margin-top: 0;
 	 } 
 
 	 .modal-content {
@@ -123,7 +124,7 @@
   		overflow-y: hidden;
 	}*/
 
-	#js-event-list-container, .map-wrapper {
+	.js-event-list-container, .map-wrapper {
 		height: 90%;
 
 	}

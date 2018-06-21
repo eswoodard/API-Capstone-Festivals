@@ -24,13 +24,13 @@
 			<a href = "index.html"><span class = "go-style">go</span><span class= "festival-style">Festival!</span></a>
 		</div>	
 		</header>
-		<div id="search-box">
-			<form id="js-search-form" class="search-form">
+		<nav role="navigation" id="search-box">
+			<form id="js-search-form" class="search-form" name="festival-search-form">
 				<legend><h1>Your festival awaits.  Go find it.</h1></legend>
 				<div class = "search-input">
-					<label for="search-box">
+					<label for="zipcode-search">
 						<span class="input-label">Enter zipcode</span> 
-						<input type="text" name="search-box" id="js-query" class = "input-box" pattern = "[0-9]{5}" title= "Five digit zip code" required>
+						<input type="text" name="zipcode-search" id="js-query" class = "input-box" pattern = "[0-9]{5}" title= "Five digit zip code" required>
 					</label>
 					<label for ="search-radius">
 						<select name ="search-radius" id="js-search-radius">
@@ -46,9 +46,9 @@
 					<button id="js-search-button" class = "button" type="submit">Go!</button>
 				</div>
 			</form>
-		</div>
-			<main role = "main" class = "content-container">
-				<div id="js-event-list-container"></div> 
+		</nav>
+			<main role = "main" class = "content-container" aria-live="assertive" hidden>
+				<div class="js-event-list-container"></div> 
 				<div class = "map-wrapper">
 					<div id="map"></div>
 				</div>	

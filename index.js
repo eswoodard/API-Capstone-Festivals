@@ -45,7 +45,7 @@ function handleEventbriteResponse(response){
 	});																																						
 	
 	noResultsMessage();	
-	$('#js-event-list-container').html(eventListHTML);	
+	$('.js-event-list-container').prop('hidden', false).html(eventListHTML);	
 
 }
 
@@ -83,12 +83,13 @@ function noResultsMessage(){
 		$('main').html(`
 				<div class = "error-message">
 					<p>No results found.  Please enter another zipcode.</p>
-				</div>
-				<div class = "error-button">	
-					<button class = "err-button button" type = "submit" >Try Again!</button>
+					<div class = "error-button">	
+						<button class = "err-button button" type = "submit" >Try Again!</button>
+					</div>
 				</div>
 			`)
 		$("#search-box").addClass("hidden");
+		$(".content-container").addClass("error");
 		$(".error-button").on("click", event => {
 			event.preventDefault();
 	 		pageReload();
@@ -142,7 +143,7 @@ function generateEventListHTML(result) {
 	<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
 			<div class = "event-list grow">	
 				<ul class = "month-day">
-					<li class = "month h-line">${eventMonth}</li>
+					<li class = "month">${eventMonth}</li>
 	 				<li class = "day">${eventDay}</li>
 				</ul>
 				<div class="line"></div>
