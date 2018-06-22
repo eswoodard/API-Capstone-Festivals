@@ -1,21 +1,8 @@
-//main page loads
-//user enters zipcode and clicks submit
-//event listener listens for submit 
-//query sent to API
-//API responds with data object
-//festival events displayed in list
-//festival markers displayed on map
-//user clicks on event
-//light box opens and displays event details and new map
-//user clicks on map marker
-//light box opens and displays event details and new map
-//user clicks on "x" or outside of lightbox
-//lightbox closes
-
 
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 let map;
-
+let focusableElementsString = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]";
+let focusedElementBeforeModal;
 
 function getDataFromEventbrite(zipcode, radius){
 	const settings = {
@@ -27,21 +14,14 @@ function getDataFromEventbrite(zipcode, radius){
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
 		}
 	}
-	//console.log("getDataFromEventbrite ran");
-	$.ajax(settings).done(handleEventbriteResponse);
 
+	$.ajax(settings).done(handleEventbriteResponse);
 }
 
 function handleEventbriteResponse(response){
-	//console.log('handleEventbriteResponse ran');
-		//console.log(response);
 	STORE.events = response.events;
 	const eventListHTML = response.events.map((item, index) => {
-	
-
-		// if (index < 50) {
 			return generateEventListHTML(item);	
-		// }
 	});																																						
 	
 	noResultsMessage();	
@@ -50,7 +30,6 @@ function handleEventbriteResponse(response){
 }
 
 function getVenueAddress(venue) {
-	//console.log("getVenueAddress ran");
 	const settings = {
 		"async": true,
 		"crossDomain": true,
@@ -62,23 +41,16 @@ function getVenueAddress(venue) {
 }
 
 function handleVenueAddress(data){
-	//console.log("handleVenueAddress ran");
-	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
-	let eventVenueId = data.id;
-	console.log(eventVenueId);
-	//console.log(venueLatLng);	
+	let eventVenueId = data.id;	
 	createMarker(venueLatLng, eventVenueId);	
 }
 
 const STORE = {
 	events: [],
-
 }
 
-
 function noResultsMessage(){
-	//console.log("noResultsMessage ran")
 	if (STORE.events.length === 0){
 		$('main').html(`
 				<div class = "error-message">
@@ -93,13 +65,11 @@ function noResultsMessage(){
 		$(".error-button").on("click", event => {
 			event.preventDefault();
 	 		pageReload();
-	 });
+	 	});
 	}
-
 }
 
 function pageReload(){
-	//console.log("pageReload ran");
 	location.reload();
 }
 
@@ -119,66 +89,54 @@ function getEventByVenueId(eventByVenueId){
 	}
 }
 
-
 function generateEventListHTML(result) {
-	
-	//console.log("generateEventListHTML ran");
-	//console.log(result);
 	const venueID = result.venue_id;
-	//console.log(venueID);
 	const eventName = result.name.text;
-	// const eventLogo = result.logo.url;
 	const eventDateAndTime = result.start.local;
-	let eventDate = moment(eventDateAndTime).format("MMM Do");
-	//console.log(eventDate);
-	//console.log(eventDateAndTime);
+	const eventDate = moment(eventDateAndTime).format("MMM Do");
 	const eventMonth = eventDate.slice(0,4);
-	//console.log(eventMonth);
 	const eventDay = eventDate.slice(4,-2);
-	//console.log(eventDay);
 	getVenueAddress(venueID);
-	
 	
 	return `
 	<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
-			<div class = "event-list grow">	
+			<button class = "event-list">	
 				<ul class = "month-day">
 					<li class = "month">${eventMonth}</li>
 	 				<li class = "day">${eventDay}</li>
 				</ul>
-				<div class="line"></div>
 				<p class="title">${result.name.text}</p>	
-	 		</div>
+	 		</button>
 	 	</div>
 	 	 `;
 	}
-// <img class = "title-list-logo" src= "images/placeholder-image.png" alt = "event logo">
-
-// }
 
 function generateModalBoxContent(result){
-	//console.log("generateModalBoxContent ran");
-	//console.log(result);
+	if(result.description.text === null){
+		result.description.text = "No description available."
+	}
 
-	// if(result.logo === null){
-	// 	$("#event-logo").html('images/placeholder-image.jpg');
-	// }
+	if(result.logo === null){
+		result.logo = "Images/alt_logo.jpg"
+	}
 
 	const eventName = result.name.text;
 	const eventURL = result.url;
 	const eventLogo = result.logo.url;
+	console.log(eventLogo);
 	const eventDescription = result.description.text;
 	const eventDateAndTime = result.start.local;
-	let eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
-	//console.log(eventDateWithTime);
+	const eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
 	const eventDate = eventDateWithTime.slice(0,13);
-	//console.log(eventDate);
 	const eventTime = eventDateWithTime.slice(15, 23);
-	//console.log(eventTime);
 	
 		$('.event-information').html(`
 		<div class = "eventName">
+<<<<<<< HEAD
 			<h2 class = "event-title" id="dialog1Title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
+=======
+			<h2 class = "event-title" id="dialog-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
+>>>>>>> feature/add-accessibility-modal
 			</h2>
 		</div>
 		<div class = "event-logo"><img id="event-logo" src = "${eventLogo}" alt = "event logo"></div>
@@ -188,7 +146,11 @@ function generateModalBoxContent(result){
 				<li class = "time">Time: ${eventTime}</li>
 			</ul>
 		</div>
+<<<<<<< HEAD
 		<div class = "event-description"><p class = "description-and-more" id="dialog1Desc"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
+=======
+		<div class = "event-description"><p class = "description-and-more" id="dialog-description"><span class = "description-text">${eventDescription}</span><a class = "more" href = "${eventURL}" target = "_blank">...more</a></p></div>
+>>>>>>> feature/add-accessibility-modal
 		<div class = "event-link"><a href = "${eventURL}" target = "_blank">Click here for additional event information and ticketing</a></div>
 		`);	
 
@@ -201,34 +163,85 @@ function limitDescriptionText(text){
 	});
 }
 
-function activateModalBox(eventId){
-	//console.log("activateModalBox ran");
+function activateModalBox(eventId, obj){
 	const event = getEventById(eventId);
-	//const event1 = getEventbyVenueId(eventByVenueId);
-	console.log(eventId);
-	console.log(event);
-	//console.log(eventByVenueId);
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
-
+	$("body").on('focusin', '.content-container', function() {
+		setFocusToFirstItemInModal($(".modal, .modal-content"));
+	});
+	$(".modal, .modal-content").keydown(function(event) {
+		trapTabKey($(this), event);
+	});
+	focusedElementBeforeModal = $(':focus');
 }
 
-function activateModalBoxWithMarker(eventByVenueID){
+function activateModalBoxWithMarker(eventByVenueID, obj){
 	generateModalBoxContent(eventByVenueID);
 	$(".modal, .modal-content").addClass("active");
+	setFocusToFirstItemInModal($(".modal"));
 }
 
+
+function trapEscapeKey(obj, event) {
+	console.log("trapEscapeKey ran");
+	if (event.which == 27) {
+		let o = obj.find('*');
+		let cancelElement;
+		cancelElement = o.filter(".close")
+		cancelElement.click();
+		event.preventDefault();
+	}
+}
+
+//lines 191-226 are for screenreader/keyboard accessibility for modal box
+
+function trapTabKey(obj, event){
+	if (event.which == 9) {
+		let o = obj.find('*');
+		let focusableItems;
+		focusableItems = o.filter(focusableElementsString).filter(':visible');
+		let focusedItem;
+		focusedItem = $(':focus');
+		let numberOfFocusableItems;
+		numberOfFocusableItems = focusableItems.length;
+		let focusedItemIndex;
+		focusedItemIndex = focusableItems.index(focusedItem);
+		if(event.shiftKey){
+			if(focusedItemIndex == 0) {
+				focusableItems.get(numberOfFocusableItems -1).focus();
+				event.preventDefault();
+			}
+		}
+		else {
+			if(focusedItemIndex == numberOfFocusableItems -1) {
+				focusableItems.get(0).focus();
+				event.preventDefault();
+			}
+		}
+	}
+}
+
+function setInitialFocusModal(obj){
+	let o = obj.find('*');
+	let focusableItems;
+	focusableItems = o.filter(focusableElementsString).filter(':visible').first().focus();
+}
+
+function setFocusToFirstItemInModal(obj){
+	let o = obj.find('*');
+	o.filter(focusableElementsString).filter(':visible').first().focus();
+}
 
 function bindEventListeners(){
 	$(".close").on("click", function(){
-		//console.log("modal close");
 		$(".modal, .modal-content").removeClass("active");
 	});
-	window.onclick = function(event){
-		if (event.target == $(".content-container")){
-			$(".modal, .modal-content").removeClass("active");
-		}
-	}
+	$(".modal, .modal-content").keydown(function(event) {
+		trapEscapeKey($(this), event);
+		focusedElementBeforeModal.focus();
+	});
+	
 	watchSubmit();		
 }
       
@@ -240,27 +253,19 @@ function initMap(query, miles) {
 
     let geocoder = new google.maps.Geocoder();
     centerMapOnZipcode(geocoder, map, query); 
-
-	//console.log("initMap ran");
 }
 
 function createMarker(latLng, eventByVenueId){
-	//console.log("createMarker ran");
-	console.log(eventByVenueId);
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
-
     marker.setMap(map);
-    
-   const eventVenue = getEventByVenueId(eventByVenueId)
-   console.log(eventVenue);
-   let infowindow = new google.maps.InfoWindow({
-   	content: eventVenue.name.text,
-   	maxWidth: 150,
+   	const eventVenue = getEventByVenueId(eventByVenueId)
+   	let infowindow = new google.maps.InfoWindow({
+   		content: eventVenue.name.text,
+   		maxWidth: 150,
    });
    
-   //console.log(eventVenue);
     marker.addListener('mouseover', function(){
     	infowindow.open(map, marker);
 	});
@@ -273,17 +278,13 @@ function createMarker(latLng, eventByVenueId){
 }
 
 function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
-	//console.log('centerMapOnZipcode ran')
 	let address = zipcode;
-	//console.log(address);
 	geocoder.geocode({'address':address}, function(results, status) {
-		//console.log(results);
 		if (status === 'OK') {
 			resultsMap.setCenter(results[0].geometry.location);
 		}
 		else {
-			console.log("error");
-			// alert('Geocode was not successful for the following reason: ' + status);	
+			console.log("error");	
 			$('.content-container').html(`
 				<div class = "error-message">
 					<p>No results found.  Please enter another zipcode.</p>
@@ -298,10 +299,7 @@ function hideHeader() {
 	$("header").addClass("main-content");
 	$(".search-input").addClass("main-content");
 	$(".button").addClass("main-content");
-
-
 }
-
 
 function watchSubmit() {
 	$('#js-search-form').submit(event => {
@@ -309,16 +307,11 @@ function watchSubmit() {
 		hideHeader();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
-		//queryTarget.val("");
 		const queryRadius = $(event.currentTarget).find('#js-search-radius');
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
 		initMap(query, miles); 
-
-
 	});
-	
-	//console.log('watchSubmit ran');
 }
 
 $(bindEventListeners);

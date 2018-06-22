@@ -64,7 +64,8 @@
 
 	.event-logo img {
 		width: 100%;
-		max-width: 300px;
+		max-width: 350px;
+
 	}
 
 	.modal-content {
@@ -76,12 +77,10 @@
 
 @media (min-width: 900px) {
 
-
 	.content-container {
 		display: block;
 		margin-right: 2.5%;
 		margin-left: 2.5%;
-		/*padding-bottom: 2.5%;*/
 		height: 90%;
 		margin-top: 2%;
 	}
@@ -115,15 +114,10 @@
 		font-size: 1rem;
 }
 
-
-
 }
 
 @media (min-width: 1200px){
 
-/*	html, body {
-  		overflow-y: hidden;
-	}*/
 
 	.js-event-list-container, .map-wrapper {
 		height: 90%;
@@ -137,7 +131,6 @@
 	.title {
 		font-size: 1.2rem;
 	}
-
 
 }
 
