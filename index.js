@@ -159,9 +159,9 @@ function activateModalBox(eventId, obj){
 	const event = getEventById(eventId);
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
-	$("body").on('focusin', '.content-container', function() {
-		setFocusToFirstItemInModal($(".modal, .modal-content"));
-	});
+	// $("body").on('focusin', '.content-container', function() {
+		setFocusToFirstItemInModal($(".modal"));
+	// });
 	$(".modal, .modal-content").keydown(function(event) {
 		trapTabKey($(this), event);
 	});
@@ -172,6 +172,10 @@ function activateModalBoxWithMarker(eventByVenueID, obj){
 	generateModalBoxContent(eventByVenueID);
 	$(".modal, .modal-content").addClass("active");
 	setFocusToFirstItemInModal($(".modal"));
+	$(".modal, .modal-content").keydown(function(event) {
+		trapTabKey($(this), event);
+	});
+	focusedElementBeforeModal = $(':focus');
 }
 
 
