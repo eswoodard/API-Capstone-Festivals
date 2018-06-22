@@ -1,6 +1,4 @@
 
-/* Always set the map height explicitly to define the size of the div
- * element that contains the map. */
 
 * {
 	box-sizing: border-box;
@@ -352,21 +350,6 @@ a {
 	text-align: center;
 	width: 6rem;
 
-
-/*a:link {
-	color: black;
-	text-decoration: none;
-}
-
-a:visited {
-	color: red;
-	text-decoration: none;
-}
-
-a:hover {
-	color: green;
-	text-decoration: underline;
-}*/
 
 
 
