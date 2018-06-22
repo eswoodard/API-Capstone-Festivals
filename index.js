@@ -1,17 +1,3 @@
-//main page loads
-//user enters zipcode and clicks submit
-//event listener listens for submit 
-//query sent to API
-//API responds with data object
-//festival events displayed in list
-//festival markers displayed on map
-//user clicks on event
-//light box opens and displays event details and new map
-//user clicks on map marker
-//light box opens and displays event details and new map
-//user clicks on "x" or outside of lightbox
-//lightbox closes
-
 
 const EVENTBRITE_SEARCH_URL = "https://www.eventbriteapi.com/v3/events/search/";
 let map;
@@ -28,21 +14,14 @@ function getDataFromEventbrite(zipcode, radius){
 			"Authorization": "Bearer 2543EBUADTSZK2TAFZS3",
 		}
 	}
-	//console.log("getDataFromEventbrite ran");
-	$.ajax(settings).done(handleEventbriteResponse);
 
+	$.ajax(settings).done(handleEventbriteResponse);
 }
 
 function handleEventbriteResponse(response){
-	//console.log('handleEventbriteResponse ran');
-		//console.log(response);
 	STORE.events = response.events;
 	const eventListHTML = response.events.map((item, index) => {
-	
-
-		// if (index < 50) {
 			return generateEventListHTML(item);	
-		// }
 	});																																						
 	
 	noResultsMessage();	
@@ -51,7 +30,6 @@ function handleEventbriteResponse(response){
 }
 
 function getVenueAddress(venue) {
-	//console.log("getVenueAddress ran");
 	const settings = {
 		"async": true,
 		"crossDomain": true,
@@ -63,23 +41,16 @@ function getVenueAddress(venue) {
 }
 
 function handleVenueAddress(data){
-	//console.log("handleVenueAddress ran");
-	//console.log(data);
 	let venueLatLng = {lat: parseFloat(data.address.latitude), lng: parseFloat(data.address.longitude)};
-	let eventVenueId = data.id;
-	//console.log(eventVenueId);
-	//console.log(venueLatLng);	
+	let eventVenueId = data.id;	
 	createMarker(venueLatLng, eventVenueId);	
 }
 
 const STORE = {
 	events: [],
-
 }
 
-
 function noResultsMessage(){
-	//console.log("noResultsMessage ran")
 	if (STORE.events.length === 0){
 		$('main').html(`
 				<div class = "error-message">
@@ -94,13 +65,11 @@ function noResultsMessage(){
 		$(".error-button").on("click", event => {
 			event.preventDefault();
 	 		pageReload();
-	 });
+	 	});
 	}
-
 }
 
 function pageReload(){
-	//console.log("pageReload ran");
 	location.reload();
 }
 
@@ -120,62 +89,46 @@ function getEventByVenueId(eventByVenueId){
 	}
 }
 
-
 function generateEventListHTML(result) {
-	
-	//console.log("generateEventListHTML ran");
-	//console.log(result);
 	const venueID = result.venue_id;
-	//console.log(venueID);
 	const eventName = result.name.text;
-	// const eventLogo = result.logo.url;
 	const eventDateAndTime = result.start.local;
 	const eventDate = moment(eventDateAndTime).format("MMM Do");
-	//console.log(eventDate);
-	//console.log(eventDateAndTime);
 	const eventMonth = eventDate.slice(0,4);
-	//console.log(eventMonth);
 	const eventDay = eventDate.slice(4,-2);
-	//console.log(eventDay);
 	getVenueAddress(venueID);
 	
-	
 	return `
-	<div id = "items" role = "button" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
-			<div class = "event-list">	
+	<div id = "items" onclick = "activateModalBox('${result.id}', '${result.venue_id}')">
+			<button class = "event-list">	
 				<ul class = "month-day">
 					<li class = "month">${eventMonth}</li>
 	 				<li class = "day">${eventDay}</li>
 				</ul>
-				<div class="line"></div>
 				<p class="title">${result.name.text}</p>	
-	 		</div>
+	 		</button>
 	 	</div>
 	 	 `;
 	}
-// <img class = "title-list-logo" src= "images/placeholder-image.png" alt = "event logo">
-
-// }
 
 function generateModalBoxContent(result){
-	//console.log("generateModalBoxContent ran");
-	//console.log(result);
+	if(result.description.text === null){
+		result.description.text = "No description available."
+	}
 
-	// if(result.logo === null){
-	// 	$("#event-logo").html('images/placeholder-image.jpg');
-	// }
+	if(result.logo === null){
+		result.logo = "Images/alt_logo.jpg"
+	}
 
 	const eventName = result.name.text;
 	const eventURL = result.url;
 	const eventLogo = result.logo.url;
+	console.log(eventLogo);
 	const eventDescription = result.description.text;
 	const eventDateAndTime = result.start.local;
 	const eventDateWithTime = moment(eventDateAndTime).format("MMM Do YYYY, h:mm a");
-	//console.log(eventDateWithTime);
 	const eventDate = eventDateWithTime.slice(0,13);
-	//console.log(eventDate);
 	const eventTime = eventDateWithTime.slice(15, 23);
-	//console.log(eventTime);
 	
 		$('.event-information').html(`
 		<div class = "eventName">
@@ -203,12 +156,7 @@ function limitDescriptionText(text){
 }
 
 function activateModalBox(eventId, obj){
-	//console.log("activateModalBox ran");
 	const event = getEventById(eventId);
-	//const event1 = getEventbyVenueId(eventByVenueId);
-	//console.log(eventId);
-	//console.log(event);
-	//console.log(eventByVenueId);
 	generateModalBoxContent(event);
 	$(".modal, .modal-content").addClass("active");
 	$("body").on('focusin', '.content-container', function() {
@@ -218,8 +166,6 @@ function activateModalBox(eventId, obj){
 		trapTabKey($(this), event);
 	});
 	focusedElementBeforeModal = $(':focus');
-	
-
 }
 
 function activateModalBoxWithMarker(eventByVenueID, obj){
@@ -239,6 +185,8 @@ function trapEscapeKey(obj, event) {
 		event.preventDefault();
 	}
 }
+
+//lines 191-226 are for screenreader/keyboard accessibility for modal box
 
 function trapTabKey(obj, event){
 	if (event.which == 9) {
@@ -277,23 +225,14 @@ function setFocusToFirstItemInModal(obj){
 	o.filter(focusableElementsString).filter(':visible').first().focus();
 }
 
-
 function bindEventListeners(){
 	$(".close").on("click", function(){
-		//console.log("modal close");
 		$(".modal, .modal-content").removeClass("active");
 	});
-
-	// window.onclick = function(event){
-	// 	if (event.target == $(".content-container")){
-	// 		$(".modal, .modal-content").removeClass("active");
-			
-	// 	}
-
-		$(".modal, .modal-content").keydown(function(event) {
+	$(".modal, .modal-content").keydown(function(event) {
 		trapEscapeKey($(this), event);
 		focusedElementBeforeModal.focus();
-		});
+	});
 	
 	watchSubmit();		
 }
@@ -306,27 +245,19 @@ function initMap(query, miles) {
 
     let geocoder = new google.maps.Geocoder();
     centerMapOnZipcode(geocoder, map, query); 
-
-	//console.log("initMap ran");
 }
 
 function createMarker(latLng, eventByVenueId){
-	//console.log("createMarker ran");
-	//console.log(eventByVenueId);
 	let marker = new google.maps.Marker({
     	position: latLng,
     });
-
     marker.setMap(map);
-    
-   const eventVenue = getEventByVenueId(eventByVenueId)
-   //console.log(eventVenue);
-   let infowindow = new google.maps.InfoWindow({
-   	content: eventVenue.name.text,
-   	maxWidth: 150,
+   	const eventVenue = getEventByVenueId(eventByVenueId)
+   	let infowindow = new google.maps.InfoWindow({
+   		content: eventVenue.name.text,
+   		maxWidth: 150,
    });
    
-   //console.log(eventVenue);
     marker.addListener('mouseover', function(){
     	infowindow.open(map, marker);
 	});
@@ -339,17 +270,13 @@ function createMarker(latLng, eventByVenueId){
 }
 
 function centerMapOnZipcode(geocoder, resultsMap, zipcode) {
-	//console.log('centerMapOnZipcode ran')
 	let address = zipcode;
-	//console.log(address);
 	geocoder.geocode({'address':address}, function(results, status) {
-		//console.log(results);
 		if (status === 'OK') {
 			resultsMap.setCenter(results[0].geometry.location);
 		}
 		else {
-			console.log("error");
-			// alert('Geocode was not successful for the following reason: ' + status);	
+			console.log("error");	
 			$('.content-container').html(`
 				<div class = "error-message">
 					<p>No results found.  Please enter another zipcode.</p>
@@ -364,10 +291,7 @@ function hideHeader() {
 	$("header").addClass("main-content");
 	$(".search-input").addClass("main-content");
 	$(".button").addClass("main-content");
-
-
 }
-
 
 function watchSubmit() {
 	$('#js-search-form').submit(event => {
@@ -375,16 +299,11 @@ function watchSubmit() {
 		hideHeader();
 		const queryTarget = $(event.currentTarget).find('#js-query');
 		const query = queryTarget.val();
-		//queryTarget.val("");
 		const queryRadius = $(event.currentTarget).find('#js-search-radius');
 		const miles = queryRadius.val();
 		getDataFromEventbrite(query, miles);
 		initMap(query, miles); 
-
-
 	});
-	
-	//console.log('watchSubmit ran');
 }
 
 $(bindEventListeners);
