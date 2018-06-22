@@ -132,7 +132,6 @@ function generateModalBoxContent(result){
 	
 		$('.event-information').html(`
 		<div class = "eventName">
-
 			<h2 class = "event-title" id="dialog-title"><a href = "${eventURL}" target = "_blank">${eventName}</a>
 			</h2>
 		</div>
